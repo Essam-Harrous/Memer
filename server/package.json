@@ -1,0 +1,29 @@
+{
+  "name": "memer",
+  "version": "1.0.0",
+  "description": "a website that lets Memer to create their memes and share it on the site and see other Memer's memes",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon App"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Essam-Harrous/Memer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Essam-Harrous/Memer/issues"
+  },
+  "homepage": "https://github.com/Essam-Harrous/Memer#readme",
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
+    "express-jwt": "^5.3.3",
+    "graphql": "^15.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.10"
+  }
+}
