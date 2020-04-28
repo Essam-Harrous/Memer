@@ -6,6 +6,7 @@ const {
   GraphQLID,
   GraphQLSchema,
   GraphQLBoolean,
+  GraphQLNonNull,
 } = require('graphql');
 
 const bcrypt = require('bcrypt');
@@ -198,15 +199,18 @@ const RootQuery = new GraphQLObjectType({
   fields: {
     users: {
       type: new GraphQLList(UserType),
-      resolve() {
+      resolve(parent, args, { user }) {
+        if (!user || (user && user.role < 2))
+          return new Error("you can't get the users data");
         return User.find({});
       },
     },
     user: {
       type: UserType,
-      args: { id: { type: GraphQLID } },
-      resolve(parent, args) {
-        return User.findById(args.id);
+      resolve(parent, args, { user }) {
+        if (!user)
+          return new Error('you need to login or signup get your data');
+        return User.findById(user.id);
       },
     },
     memes: {
@@ -224,9 +228,12 @@ const RootQuery = new GraphQLObjectType({
     },
     notifications: {
       type: new GraphQLList(NotificationType),
-      args: { id: { type: GraphQLID } },
-      resolve(parent, args) {
-        return Notification.find({ receiverId: args.id });
+      resolve(parent, args, { user }) {
+        if (!user)
+          return new Error(
+            'you need to login or signup to see your notification'
+          );
+        return Notification.find({ receiverId: user.id });
       },
     },
     ads: {
@@ -338,6 +345,7 @@ const Mutation = new GraphQLObjectType({
         memeUrl: { type: GraphQLString },
         content: { type: GraphQLString },
         templateUrl: { type: GraphQLString },
+        templateId: { type: GraphQLID },
         tags: { type: new GraphQLList(GraphQLString) },
       },
       async resolve(parent, args, { user }) {
@@ -345,18 +353,22 @@ const Mutation = new GraphQLObjectType({
           //check if the user has a valid
           if (!user) throw new Error('you need to logIn or signUP');
 
-          //create a new template
-          const newTemplate = await Template.create({
-            templateUrl: args.templateUrl,
-            tags: args.tags,
-            userId: user.id,
-          });
+          //check if the meme has a templateId or not
+          let templateId;
+          if (!args.templateId) {
+            //create a new template
+            templateId = await Template.create({
+              templateUrl: args.templateUrl,
+              tags: args.tags,
+              userId: user.id,
+            }).id;
+          } else templateId = args.templateId;
 
           //create a new meme
           return Meme.create({
             ...args,
             userId: user.id,
-            templateId: newTemplate.id,
+            templateId,
           });
         } catch (err) {
           return err;
@@ -481,7 +493,7 @@ const Mutation = new GraphQLObjectType({
 
           //delete the template
           const deletedtemplate = await template.remove();
-          console.log(deletedtemplate);
+
           return deletedtemplate;
         } catch (e) {
           return e;
@@ -535,7 +547,6 @@ const Mutation = new GraphQLObjectType({
           const newMeme = await Meme.findByIdAndUpdate(args.memeId, {
             $push: { comments: newComment.id },
           });
-          console.log(newMeme);
 
           return newComment;
         } catch (err) {
@@ -545,7 +556,10 @@ const Mutation = new GraphQLObjectType({
     },
     deleteComment: {
       type: SuccessType,
-      args: { memeId: { type: GraphQLID }, commentId: { type: GraphQLID } },
+      args: {
+        memeId: { type: new GraphQLNonNull(GraphQLID) },
+        commentId: { type: new GraphQLNonNull(GraphQLID) },
+      },
       async resolve(parent, args, { user }) {
         try {
           //check if the user has a valid token
@@ -567,6 +581,49 @@ const Mutation = new GraphQLObjectType({
           return {
             success: true,
             message: `you deleted the comment ${deletedComment.content}`,
+          };
+        } catch (e) {
+          return e;
+        }
+      },
+    },
+    deleteUser: {
+      type: SuccessType,
+      async resolve(parent, args, { user }) {
+        try {
+          //check if the user has a valid token
+          if (!user) throw new Error('You need to logIn or SignUp');
+
+          //delete the Meme
+          await User.findByIdAndDelete(user.id);
+          return {
+            success: true,
+            message: `you deleted the meme successfully`,
+          };
+        } catch (e) {
+          return e;
+        }
+      },
+    },
+    deleteUsers: {
+      type: SuccessType,
+      args: {
+        userIds: { type: new GraphQLList(GraphQLID) },
+      },
+      async resolve(parent, args, { user }) {
+        try {
+          //check if the user has a valid token and admin
+          if (!user || (user && user.role < 2)) {
+            throw new Error("you can't delete these Users");
+          }
+
+          //fidn and delete the Users
+          await User.deleteMany({
+            _id: { $in: args.userIds },
+          });
+          return {
+            success: true,
+            message: `you deleted ${args.userIds.length} successfully`,
           };
         } catch (e) {
           return e;
