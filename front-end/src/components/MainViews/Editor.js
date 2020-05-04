@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import PostSaveMeme from './PostSaveMeme';
-import { saveMeme } from '../actions';
+import PostSaveMeme from '../Models/PostSaveMeme';
+import { saveMeme } from '../../actions';
 
 class Editor extends Component {
   shouldComponentUpdate() {

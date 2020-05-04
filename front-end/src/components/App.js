@@ -6,10 +6,10 @@ import history from '../history';
 //components
 import Nav from './Nav';
 import SlideBar from './SlideBar';
-import MemesContainer from './MemesContainer';
-import Editor from './Editor';
-import SignIn from './SignIn';
-import SignUp from './SignUp';
+import MemesContainer from './MainViews/MemesContainer';
+import Editor from './MainViews/Editor';
+import SignIn from './Models/SignIn';
+import SignUp from './Models/SignUp';
 
 class App extends React.Component {
   render() {
@@ -20,7 +20,7 @@ class App extends React.Component {
         <SignUp />
         <div className='container-fluid'>
           <div className='row mt-5'>
-            <nav className='d-none d-xl-block py-3 col-xl-2 bd-toc'>
+            <nav className='d-none d-xl-block py-3 ml-md-3 col-xl-2 bd-toc'>
               <div className='card'>
                 <div>hi</div>
                 <div>hi</div>
