@@ -11,6 +11,7 @@ const {
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const cloudinary = require('cloudinary').v2;
 const SECRET_TOKEN_VALUE = require('../config');
 
 const Meme = require('../models/meme');
@@ -339,6 +340,7 @@ const Mutation = new GraphQLObjectType({
         };
       },
     },
+    //it has issues about template, I need to fix it later
     addMeme: {
       type: MemeType,
       args: {
@@ -627,6 +629,16 @@ const Mutation = new GraphQLObjectType({
           };
         } catch (e) {
           return e;
+        }
+      },
+    },
+    test: {
+      type: SuccessType,
+      async resolve(parent, args, { test }) {
+        if (test) {
+          cloudinary.uploader.upload(test).then((res) => {
+            console.log(res);
+          });
         }
       },
     },

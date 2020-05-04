@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const graphqlHTTP = require('express-graphql');
 const jwt = require('express-jwt');
+const cloudinary = require('cloudinary').v2;
+const fileUpload = require('express-fileupload');
 
 const schema = require('./schema/schema');
 const test = require('./models/test');
@@ -23,6 +25,12 @@ mongoose
   .catch((err) => console.log(err));
 mongoose.connection.once('open', () => console.log('database is connected'));
 
+cloudinary.config({
+  cloud_name: 'essam',
+  api_key: '137987238286318',
+  api_secret: 'rGTNSSA1d6qBdbgVfphPaHj3nPc',
+});
+
 app.use(
   jwt({ secret: SECRET_TOKEN, credentialsRequired: false }),
   (err, req, res, next) => {
@@ -31,6 +39,8 @@ app.use(
   }
 );
 
+app.use(fileUpload({ useTempFiles: true }));
+
 app.use(
   '/graphql',
   graphqlHTTP((req) => ({
@@ -38,6 +48,8 @@ app.use(
     graphiql: true,
     context: {
       user: req.user,
+      file: req.files,
+      memeUrl: req.body.meme,
     },
   }))
 );
