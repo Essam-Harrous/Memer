@@ -256,6 +256,41 @@ const RootQuery = new GraphQLObjectType({
         return Template.findById(args.id);
       },
     },
+    logIn: {
+      type: UserType,
+      args: {
+        username: { type: GraphQLString },
+        email: { type: GraphQLString },
+        password: { type: GraphQLString },
+      },
+      async resolve(parent, args) {
+        //check if the username or the email is correct
+        const user = await User.findOne({
+          $or: [{ username: args.username }, { email: args.email }],
+        });
+        if (!user) throw new Error('الرجاء إدخال بيانات صحيحة');
+
+        //check if the password is correct
+        const isPassword = await bcrypt.compare(args.password, user.password);
+        if (!isPassword) throw new Error('الرجاء إدخال بيانات صحيحة');
+
+        //generate a token for this user
+        const token = jwt.sign(
+          { id: user.id, username: user.username, role: user.role },
+          SECRET_TOKEN_VALUE,
+          { expiresIn: '2h' }
+        );
+
+        //return an object that hold the use data
+        return {
+          token,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          username: user.username,
+          role: user.role,
+        };
+      },
+    },
   },
 });
 
@@ -265,18 +300,19 @@ const Mutation = new GraphQLObjectType({
     signUp: {
       type: UserType,
       args: {
-        email: { type: GraphQLString },
-        password: { type: GraphQLString },
-        username: { type: GraphQLString },
-        firstName: { type: GraphQLString },
-        lastName: { type: GraphQLString },
+        email: { type: new GraphQLNonNull(GraphQLString) },
+        password: { type: new GraphQLNonNull(GraphQLString) },
+        username: { type: new GraphQLNonNull(GraphQLString) },
+        firstName: { type: new GraphQLNonNull(GraphQLString) },
+        lastName: { type: new GraphQLNonNull(GraphQLString) },
       },
       async resolve(parent, args) {
         //check if the userneam or the email has been used
         const isUserUsed = await User.exists({ username: args.username });
         const isEmailUsed = await User.exists({ email: args.email });
-        if (isUserUsed) throw new Error('this username is used');
-        else if (isEmailUsed) throw new Error('this email is used');
+        if (isUserUsed) throw new Error(`هذا الإسم غير متوفر ${args.username}`);
+        else if (isEmailUsed)
+          throw new Error(`هذا البريد مستخدم في حسار أخر ${args.email}`);
 
         //hash the use password via bcrypt library
         const password = await bcrypt.hash(args.password, 12);
@@ -292,7 +328,7 @@ const Mutation = new GraphQLObjectType({
         const token = jwt.sign(
           { id: newUser.id, username: newUser.username, role: newUser.role },
           SECRET_TOKEN_VALUE,
-          { expiresIn: '1h' }
+          { expiresIn: '2h' }
         );
 
         //return an object that hold the use data
@@ -301,42 +337,6 @@ const Mutation = new GraphQLObjectType({
           firstName: newUser.firstName,
           lastName: newUser.lastName,
           username: newUser.username,
-          role: newUser.role,
-        };
-      },
-    },
-    logIn: {
-      type: UserType,
-      args: {
-        username: { type: GraphQLString },
-        email: { type: GraphQLString },
-        password: { type: GraphQLString },
-      },
-      async resolve(parent, args) {
-        //check if the username or the email is correct
-        const user = await User.findOne({
-          $or: [{ username: args.username }, { email: args.email }],
-        });
-        if (!user) throw new Error('Enter correct data');
-
-        //check if the password is correct
-        const isPassword = await bcrypt.compare(args.password, user.password);
-        if (!isPassword) throw new Error('Enter correct data');
-
-        //generate a token for this user
-        const token = jwt.sign(
-          { id: user.id, username: user.username, role: user.role },
-          SECRET_TOKEN_VALUE,
-          { expiresIn: '1h' }
-        );
-
-        //return an object that hold the use data
-        return {
-          token,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          username: user.username,
-          role: user.role,
         };
       },
     },

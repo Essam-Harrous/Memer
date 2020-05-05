@@ -20,6 +20,7 @@
   "dependencies": {
     "bcrypt": "^4.0.1",
     "cloudinary": "^1.21.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.7-alpha.3",
     "express-graphql": "^0.9.0",

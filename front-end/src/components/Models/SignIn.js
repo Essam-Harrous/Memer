@@ -1,8 +1,11 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { connect } from 'react-redux';
 
-const SignIn = () => {
+import { logIn } from '../../actions';
+
+const SignIn = (props) => {
   //yup initialization
   const schema = yup.object().shape({
     usernameEmail: yup.string().required('required'),
@@ -17,6 +20,17 @@ const SignIn = () => {
     },
     onSubmit: (values) => {
       console.log(values, 'submit');
+      if (values.usernameEmail.includes('@')) {
+        props.logIn({
+          password: values.password,
+          usernameEmail: `email: "${values.usernameEmail}"`,
+        });
+      } else {
+        props.logIn({
+          password: values.password,
+          usernameEmail: `username: "${values.usernameEmail}"`,
+        });
+      }
     },
     validationSchema: () => schema,
   });
@@ -55,7 +69,7 @@ const SignIn = () => {
                   action='#!'
                 >
                   <div className='md-form'>
-                    <i className='fa fa-envelope prefix'></i>
+                    <i className='fa fa-envelope left prefix'></i>
                     <input
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -75,7 +89,7 @@ const SignIn = () => {
                   </div>
 
                   <div className='md-form'>
-                    <i className='fa fa-lock prefix'></i>
+                    <i className='fa fa-lock left prefix'></i>
                     <input
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -91,7 +105,11 @@ const SignIn = () => {
                       </div>
                     ) : null}
                   </div>
-
+                  {props.user.errMessage ? (
+                    <div className='alert alert-danger' role='alert'>
+                      {props.user.errMessage}
+                    </div>
+                  ) : null}
                   <button
                     className='btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0'
                     type='submit'
@@ -121,4 +139,10 @@ const SignIn = () => {
     </div>
   );
 };
-export default SignIn;
+
+const mapStateToProps = (state) => {
+  return { user: state.user };
+};
+export default connect(mapStateToProps, {
+  logIn,
+})(SignIn);

@@ -1,8 +1,12 @@
 import React from 'react';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
+import { connect } from 'react-redux';
 
-const SignUp = () => {
+//actions
+import { signUp } from '../../actions';
+
+const SignUp = (props) => {
   //yup schema initialization
   const schema = yup.object().shape({
     firstName: yup
@@ -12,10 +16,14 @@ const SignUp = () => {
     lastName: yup
       .string()
       .min(3, 'الرجاء إدخال 3 خانات على الأقل')
-      .required('الرجاء إدخال اللقب'),
+      .required('الرجاء إدخال إسم المستخدم'),
     username: yup
       .string()
       .min(3, 'الرجاء إدخال 3 خانات على الأقل')
+      .matches(
+        /^[a-z0-9-_.]+$/,
+        'الرجاء إدخال إسم المستخدم باللغة الإنجليزية و بدون مسافة'
+      )
       .required('الرجاء إدخال اللقب'),
     email: yup
       .string()
@@ -41,7 +49,7 @@ const SignUp = () => {
       confirmPassword: '',
     },
     onSubmit: (values) => {
-      console.log(values);
+      props.signUp(values);
     },
     validationSchema: schema,
   });
@@ -55,6 +63,7 @@ const SignUp = () => {
       aria-labelledby='signUp'
       aria-hidden='true'
     >
+      {console.log(props.user)}
       <div className='modal-dialog modal-md rtl' role='document'>
         <div className='modal-content'>
           <div className='modal-header'>
@@ -120,7 +129,7 @@ const SignUp = () => {
                   </div>
 
                   <div className='md-form mt-0'>
-                    <i class='fas fa-at prefix left'></i>
+                    <i className='fas fa-at prefix left'></i>
                     <input
                       onBlur={formik.handleBlur}
                       onChange={formik.handleChange}
@@ -133,6 +142,11 @@ const SignUp = () => {
                     {formik.errors.username && formik.touched.username ? (
                       <div className='alert alert-danger' role='alert'>
                         {formik.errors.username}
+                      </div>
+                    ) : null}
+                    {props.user.errMessage && props.user.errMessage.username ? (
+                      <div className='alert alert-danger' role='alert'>
+                        {props.user.errMessage.username}
                       </div>
                     ) : null}
                   </div>
@@ -151,6 +165,11 @@ const SignUp = () => {
                     {formik.errors.email && formik.touched.email ? (
                       <div className='alert alert-danger' role='alert'>
                         {formik.errors.email}
+                      </div>
+                    ) : null}
+                    {props.user.errMessage && props.user.errMessage.email ? (
+                      <div className='alert alert-danger' role='alert'>
+                        {props.user.errMessage.email}
                       </div>
                     ) : null}
                   </div>
@@ -174,7 +193,6 @@ const SignUp = () => {
                       </div>
                     ) : null}
                   </div>
-                  {console.log(formik)}
                   <div className='md-form'>
                     <i className='fa fa-lock prefix left'></i>
                     <input
@@ -218,4 +236,10 @@ const SignUp = () => {
     </div>
   );
 };
-export default SignUp;
+
+const mapStateToProps = (state) => {
+  return { user: state.user };
+};
+export default connect(mapStateToProps, {
+  signUp,
+})(SignUp);

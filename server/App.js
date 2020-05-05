@@ -4,6 +4,7 @@ const graphqlHTTP = require('express-graphql');
 const jwt = require('express-jwt');
 const cloudinary = require('cloudinary').v2;
 const fileUpload = require('express-fileupload');
+const cors = require('cors');
 
 const schema = require('./schema/schema');
 const test = require('./models/test');
@@ -11,6 +12,7 @@ const SECRET_TOKEN = require('./config');
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 mongoose
   .connect(
