@@ -19,7 +19,7 @@
 
 #sidebar {
   padding-top: 2.5rem;
-  width: 250px;
+  width: 300px;
   position: fixed;
   top: 0;
   right: 0;
@@ -31,7 +31,7 @@
 }
 
 #sidebar.active {
-  margin-right: -250px;
+  margin-right: -300px;
 }
 
 a[data-toggle='collapse'] {
@@ -42,13 +42,13 @@ a[data-toggle='collapse'] {
   display: block;
   position: absolute;
   top: 50%;
-  right: 20px;
+  left: 20px;
   transform: translateY(-50%);
 }
 
 @media (max-width: 768px) {
   #sidebar {
-    margin-right: -250px;
+    margin-right: -300px;
   }
   #sidebar.active {
     margin-right: 0;

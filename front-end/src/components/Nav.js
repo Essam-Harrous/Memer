@@ -1,37 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-export default function Nav() {
+const Nav = (props) => {
+  //
+  const isLoggedIn = props.user.token ? true : false;
+
+  const LogInOrOut = () => {
+    if (isLoggedIn) {
+      return (
+        <li className='nav-item'>
+          <a className='nav-link' href='#'>
+            Log Out
+          </a>
+        </li>
+      );
+    }
+    return (
+      <>
+        <li className='nav-item'>
+          <a
+            type='button'
+            data-toggle='modal'
+            data-target='#signIn'
+            className='nav-link'
+            href='#'
+          >
+            تسجيل الدخول
+          </a>
+        </li>
+        <li className='nav-item'>
+          <a
+            type='button'
+            data-toggle='modal'
+            data-target='#signUp'
+            className='nav-link'
+            href='#'
+          >
+            إنشاء حساب
+          </a>
+        </li>
+      </>
+    );
+  };
   return (
     <nav className='navbar navbar-expand-xl navbar-dark bg-dark fixed-top'>
       <div className='navbar-collapse collapse w-100 order-1 order-md-0 '>
-        <ul className='navbar-nav mr-auto'>
-          <li className='nav-item'>
-            <a className='nav-link' href='#'>
-              Log Out
-            </a>
-          </li>
-          <li className='nav-item'>
-            <a
-              data-toggle='modal'
-              data-target='#signIn'
-              className='nav-link'
-              href='#'
-            >
-              Sign In
-            </a>
-          </li>
-          <li className='nav-item'>
-            <a
-              data-toggle='modal'
-              data-target='#signUp'
-              className='nav-link'
-              href='#'
-            >
-              Sign Up
-            </a>
-          </li>
-        </ul>
+        <ul className='navbar-nav mr-auto'>{LogInOrOut()}</ul>
       </div>
       <div className='mx-auto order-0'>
         <Link to='/' className='navbar-brand mx-auto'>
@@ -52,12 +67,22 @@ export default function Nav() {
       <div className='navbar-collapse collapse w-100 order-3 dual-collapse2'>
         <ul className='navbar-nav ml-auto'>
           <li className='nav-item'>
-            <a className='nav-link' href='#'>
-              Create Meme
-            </a>
+            <Link className='nav-link' to='/'>
+              إنشاء ميمز جديد
+            </Link>
+          </li>
+          <li className='nav-item'>
+            <Link className='nav-link' to='/'>
+              إضافة قالب ميمز
+            </Link>
           </li>
         </ul>
       </div>
     </nav>
   );
-}
+};
+
+const mapStateToProps = (state) => {
+  return { user: state.user };
+};
+export default connect(mapStateToProps)(Nav);

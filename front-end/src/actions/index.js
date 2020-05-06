@@ -18,7 +18,7 @@ export const signUp = (userData) => async (dispatch) => {
   try {
     const res = await request('http://localhost:8080/graphql', query);
     console.log(res);
-    return res.signUp;
+    dispatch({ type: 'SIGN_SUCCESS', payload: res.signUp });
   } catch (err) {
     console.log(err.response, err);
     dispatch({

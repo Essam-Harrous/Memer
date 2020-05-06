@@ -63,7 +63,6 @@ const SignUp = (props) => {
       aria-labelledby='signUp'
       aria-hidden='true'
     >
-      {console.log(props.user)}
       <div className='modal-dialog modal-md rtl' role='document'>
         <div className='modal-content'>
           <div className='modal-header'>

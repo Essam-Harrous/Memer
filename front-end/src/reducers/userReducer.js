@@ -1,14 +1,14 @@
 const INITIAL_VALUE = {
-  firstName: '',
-  lastName: '',
-  username: '',
+  firstName: null,
+  lastName: null,
+  username: null,
+  token: null,
 };
 
 export default (state = INITIAL_VALUE, action) => {
   if (action.type == 'SIGN_SUCCESS') {
-    // return action.payload;
+    return action.payload;
   } else if (action.type == 'SIGN_UP_FAILED') {
-    let errMessage = {};
     if (action.payload.errMessage.includes('البريد')) {
       return {
         errMessage: {

@@ -41,7 +41,7 @@ class Editor extends Component {
 
   render() {
     return (
-      <main className='col-md-7 my-5 py-3 ml-md-5 mx-auto bd-content'>
+      <main className='col-md-6 my-5 py-3 ml-md-5 mx-auto bd-content'>
         <button
           id='showModal'
           type='button'
