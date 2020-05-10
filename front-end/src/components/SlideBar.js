@@ -1,10 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const SlideBar = () => {
-  return (
-    <nav id='sidebar'>
-      <div className='sidebar-header mt-3'>
+import { checkToken } from '../actions';
+import { logOut } from '../actions';
+
+const SlideBar = (props) => {
+  //handleLogOut
+  const handleLogOut = () => {
+    //I used setTimeout as a tempararury solution to
+    //avoid the click on the element signIn behind the logOut element
+    setTimeout(() => {
+      props.logOut();
+    }, 50);
+  };
+
+  //show user info if exist
+  const userInfo = () => {
+    if (props.user.firstName) {
+      return (
         <div className='media text-right rtl'>
           <img
             className='d-flex ml-3 rounded-circle'
@@ -12,11 +26,57 @@ const SlideBar = () => {
             alt='Generic placeholder image'
           />
           <div className='media-body mt-2'>
-            <h5 className='font-weight-bold'>عصام هروس</h5>
-            <small>إسم المستخدم: esso@</small>
+            <h5 className='font-weight-bold'>
+              {props.user.firstName + ' ' + props.user.lastName}
+            </h5>
+            <small>إسم المستخدم: {props.user.username}@</small>
           </div>
         </div>
+      );
+    } else if (localStorage.getItem('token')) {
+      props.checkToken();
+    }
+  };
+
+  const renderLogInOrOut = () => {
+    if (props.user.token) {
+      return (
+        <div className='d-flex justify-content-around'>
+          <Link
+            onClick={handleLogOut}
+            to='#'
+            className='btn btn-primary btn-sm w-100 rounded'
+          >
+            تسجيل الخروج
+          </Link>
+        </div>
+      );
+    }
+    return (
+      <div className='d-flex justify-content-around'>
+        <Link
+          to='#'
+          data-toggle='modal'
+          data-target='#signUp'
+          className='btn btn-primary btn-sm w-100 rounded'
+        >
+          إنشاء حساب
+        </Link>
+        <Link
+          to='#'
+          data-toggle='modal'
+          data-target='#signIn'
+          className='btn btn-primary btn-sm w-100 rounded'
+        >
+          تسجيل الدخول
+        </Link>
       </div>
+    );
+  };
+
+  return (
+    <nav id='sidebar'>
+      <div className='sidebar-header mt-3'>{userInfo()}</div>
 
       <ul className='list-unstyled components pt-0 text-right'>
         <div className='d-md-none'>
@@ -29,35 +89,36 @@ const SlideBar = () => {
               aria-label='Search'
             />
           </form>
+          {renderLogInOrOut()}
           <li>
-            <Link to='/editor' className='btn btn-primary btn-sm w-100 rounded'>
-              إنشاء حساب
-            </Link>
-          </li>
-          <li>
-            <Link to='/editor' className='btn btn-primary btn-sm w-100 rounded'>
-              تسجيل الدخول
-            </Link>
-          </li>
-          <div className='d-flex justify-content-around'>
-            <Link to='/editor' className='btn btn-primary btn-sm w-80 rounded'>
+            <Link
+              className='btn btn-primary btn-sm w-80 rounded'
+              to='/templates'
+            >
               إنشاء ميمز جديد
             </Link>
-            <Link to='/editor' className='btn btn-primary btn-sm w-80 rounded'>
+          </li>
+          <li>
+            <Link
+              data-toggle='modal'
+              data-target='#addTemplate'
+              className='btn btn-primary btn-sm w-80 rounded'
+              to='#'
+            >
               إضافة قالب ميمز
             </Link>
-          </div>
+          </li>
         </div>
-        <li className='active'>
+        <li>
           <a
-            href='#homeSubmenu'
+            href='#pageSubmenu'
             data-toggle='collapse'
             aria-expanded='false'
             className='dropdown-toggle'
           >
             ميمز / Memes
           </a>
-          <ul className='collapse list-unstyled' id='homeSubmenu'>
+          <ul className='collapse list-unstyled' id='pageSubmenu'>
             <li>
               <a href='#'>آخر ما تم نشره</a>
             </li>
@@ -70,7 +131,25 @@ const SlideBar = () => {
           </ul>
         </li>
         <li>
-          <a href='#'>المفضلة</a>
+          <a
+            href='#pageSubmenu'
+            data-toggle='collapse'
+            aria-expanded='false'
+            className='dropdown-toggle'
+          >
+            أفضل الميمرز
+          </a>
+          <ul className='collapse list-unstyled' id='pageSubmenu'>
+            <li>
+              <a href='#'>هذا الشهر</a>
+            </li>
+            <li>
+              <a href='#'>هذا الأسبوع</a>
+            </li>
+            <li>
+              <a href='#'>هذه السنة</a>
+            </li>
+          </ul>
         </li>
         <li>
           <a href='#'>ميمز قمت بإنشاءها</a>
@@ -80,6 +159,9 @@ const SlideBar = () => {
         </li>
         <li>
           <a href='#'>تطبيق الموبايل</a>
+        </li>
+        <li>
+          <a href='#'>إعدادات</a>
         </li>
         {/* <li>
           <a
@@ -109,7 +191,42 @@ const SlideBar = () => {
           <a href='#'>Contact</a>
         </li> */}
       </ul>
+
+      <footer
+        style={{ backgroundColor: '#7386d5' }}
+        className='page-footer font-small pt-4'
+      >
+        <div className='container-fluid text-center'>
+          <div className='mb-3'>
+            <h5 className='text-uppercase'>contact</h5>
+            <p className='white-text'>developed by Essam Harous</p>
+            <div className='d-flex justify-content-around'>
+              <a href='https://web.facebook.com/faragharoos' target='_blank'>
+                <i class='fab fa-facebook-f fa-2x'></i>
+              </a>
+              <a href='https://github.com/Essam-Harrous' target='_blank'>
+                <i class='fab fa-2x fa-github'></i>
+              </a>
+              <a href='https://twitter.com/EssamHarous' target='_blank'>
+                <i class='fab fa-2x fa-twitter'></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className='footer-copyright text-center py-3'>
+          © 2020 Copyright: &nbsp;
+          <a href='#'>Memer.ly</a>
+        </div>
+      </footer>
     </nav>
   );
 };
-export default SlideBar;
+
+const mapStateToProps = (state) => {
+  return { user: state.user };
+};
+export default connect(mapStateToProps, {
+  checkToken,
+  logOut,
+})(SlideBar);

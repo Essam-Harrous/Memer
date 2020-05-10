@@ -19,7 +19,7 @@
     <!--
       pixie
     -->
-    <link rel="stylesheet" href="styles.min.css?v19" />
+    <link rel="stylesheet" href="../styles.min.css?v19" />
     <link
       href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
       rel="stylesheet"
@@ -33,7 +33,7 @@
         height: 100%;
       }
     </style>
-    <link rel="stylesheet" href="spinner.css" />
+    <link rel="stylesheet" href="../spinner.css" />
 
     <!--
       semantic ui link
@@ -59,8 +59,6 @@
       rel="stylesheet"
     />
 
-    <!-- Our Custom CSS -->
-    <link rel="stylesheet" href="style2.css" />
     <!-- Scrollbar Custom CSS -->
     <link
       rel="stylesheet"
@@ -92,7 +90,7 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
 
-    <script src="scripts.min.js?v19"></script>
+    <script src="../scripts.min.js?v19"></script>
 
     <!-- 
     <script>
@@ -151,6 +149,17 @@
         // and also adjust aria-expanded attributes we use for the open/closed arrows
         // in our CSS
         $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+      });
+
+      $('#body').on('click', () => {
+        console.log('hi');
+        console.log(
+          $('#sidebar'),
+          $('#sidebar')[0].classList.contains('active')
+        );
+        if ($('#sidebar')[0].classList.contains('active')) {
+          $('#sidebar').toggleClass('active');
+        }
       });
     });
   </script>

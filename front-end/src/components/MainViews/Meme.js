@@ -1,14 +1,46 @@
 import React from 'react';
 
-const Meme = () => {
+const Meme = (props) => {
   return (
     <div id='meme-container' className='card my-5 mx-auto'>
-      <div className='card-header'>Quote</div>
+      <div className='card-header'>
+        <div className='media text-right rtl'>
+          <img
+            className='d-flex ml-3 rounded-circle'
+            src='https://mdbootstrap.com/img/Photos/Others/placeholder1.jpg'
+            alt='Generic placeholder image'
+          />
+          <div className='media-body mt-2'>
+            <div className='font-weight-bold'>
+              {props.meme.user.firstName + ' ' + props.meme.user.lastName}
+            </div>
+            <small>إسم المستخدم: {props.meme.user.username}@</small>
+          </div>
+          <div className='text-left'>
+            <h5 className='font-weight-bold'>...</h5>
+            <small>2020/5/19</small>
+          </div>
+        </div>
+      </div>
       <div className='card-body'>
-        <img
-          className='card-img-top'
-          src='data:image/jpeg;base64,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'
-        />
+        <div className='text-right mb-3'>{props.meme.content}</div>
+        <div>
+          <img className='card-img-top' alt='' src={props.meme.memeUrl} />
+        </div>
+        <div className='d-flex justify-content-around mt-3'>
+          <a type='button'>
+            <i className='fas fa-2x fa-share-alt'></i>
+          </a>
+          <a type='button'>
+            <i className='far fa-2x fa-frown'></i>
+          </a>
+          <a type='button'>
+            <i className='far fa-2x fa-grin-tears'></i>
+          </a>
+          <a type='button'>
+            <i className='far fa-2x fa-comment'></i>
+          </a>
+        </div>
       </div>
     </div>
   );

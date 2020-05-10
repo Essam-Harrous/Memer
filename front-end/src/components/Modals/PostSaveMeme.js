@@ -1,15 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, createRef } from 'react';
 import { connect } from 'react-redux';
 import Tags from '@yaireo/tagify/dist/react.tagify';
 import { useFormik } from 'formik';
+import ReactLoading from 'react-loading';
+import _ from 'lodash';
+
+//actions
+import { addMeme } from '../../actions';
+
 //Main component
 const PostSaveMeme = (props) => {
-  const [isPostMeme, setPostMeme] = useState(false);
+  const [state, setState] = useState({
+    isPostMeme: false,
+    isLoading: false,
+    isSaved: false,
+  });
   const [tags, setTags] = useState([]);
+
+  const closeRef = createRef();
 
   // Tagify settings object
   const baseTagifySettings = {
-    blacklist: ['xxx', 'yyy', 'zzz'],
+    blacklist: ['سكس', 'sex', 'fuck'],
     maxTags: 10,
     backspace: 'edit',
     placeholder: 'أضف كلمات دلالية',
@@ -21,7 +33,7 @@ const PostSaveMeme = (props) => {
     callbacks: {
       blur: (e) => {
         const tagsValues = e.detail.tagify.value.map((obj) => {
-          return obj.value;
+          return `"${obj.value}"`;
         });
         setTags(tagsValues);
       },
@@ -33,37 +45,37 @@ const PostSaveMeme = (props) => {
     initialValues: {
       content: '',
     },
-    onSubmit: (values) => {
-      const memeData = {
-        ...values,
-        tags,
-        memeUrl: props.saveMeme.memeUrl,
-      };
-      console.log(memeData);
+    onSubmit: ({ content }) => {
+      if (localStorage.getItem('token')) {
+        const memeData = {
+          content: _.escapeRegExp(_.escape(content)),
+          tags,
+          ...props.saveMeme,
+        };
+        setState({
+          isPostMeme: true,
+          isLoading: true,
+        });
+        console.log(memeData);
+        props.addMeme(memeData, setState);
+      } else {
+        alert('أرجاء تسحيل الدخول أو إنشاء حساب جديد لنشر الميم');
+      }
     },
   });
 
   //save meme
   const saveMeme = () => {
     return (
-      <div className='modal-content'>
-        <div className='modal-header'>
-          <h4 className='modal-title w-100 text-right' id='save-meme'>
-            التنزيل/النشر
-          </h4>
-          <button
-            type='button'
-            className='close'
-            data-dismiss='modal'
-            aria-label='Close'
-          >
-            <span aria-hidden='true'>&times;</span>
-          </button>
-        </div>
+      <div>
         <div className='modal-body text-right'>
           <h2>تم تعديل الصورة بنجاح.</h2>
           <h4>هل تريد مشاركة الميم معنا؟</h4>
-          <img className='card-image w-100' src={props.saveMeme.memeUrl} />
+          <img
+            alt=''
+            className='card-image w-100'
+            src={props.saveMeme.memeUrl}
+          />
         </div>
         <div className='modal-footer'>
           <a
@@ -75,7 +87,7 @@ const PostSaveMeme = (props) => {
             تنزيل
           </a>
           <button
-            onClick={() => setPostMeme(true)}
+            onClick={() => setState({ isPostMeme: true })}
             type='button'
             className='btn btn-primary btn-md'
           >
@@ -88,29 +100,15 @@ const PostSaveMeme = (props) => {
 
   //post Meme
   const postMeme = () => {
-    return (
-      <div className='modal-content'>
-        <div className='modal-header'>
-          <h4 className='modal-title w-100 text-right' id='save-meme'>
-            النشر
-          </h4>
-          <button
-            type='button'
-            className='close'
-            data-dismiss='modal'
-            aria-label='Close'
-            onClick={() => setPostMeme(false)}
-          >
-            <span aria-hidden='true'>&times;</span>
-          </button>
-        </div>
+    if (!state.isLoading) {
+      return (
         <form onSubmit={formik.handleSubmit}>
           <div className='modal-body text-right'>
             <div className='form-group'>
               <label htmlFor='tags'>كلمات مفتاحية*</label>
               <Tags id='tags' value='مثال' settings={baseTagifySettings} />
               <small>
-                <em>إضغط enter لإضافة كلمة أخرة</em>
+                <em>إضغط enter لإضافة كلمة ثانية</em>
               </small>
             </div>
             <div className='form-group'>
@@ -127,7 +125,8 @@ const PostSaveMeme = (props) => {
           </div>
           <div className='modal-footer'>
             <button
-              onClick={() => setPostMeme(false)}
+              id='close-meme'
+              onClick={() => setState({ isPostMeme: false })}
               className='btn btn-secondary btn-md'
               data-dismiss='modal'
             >
@@ -138,6 +137,30 @@ const PostSaveMeme = (props) => {
             </button>
           </div>
         </form>
+      );
+    }
+    if (state.isSaved) {
+      setTimeout(() => {
+        console.log(closeRef, closeRef.current);
+        closeRef.current.click();
+        setState({
+          isLoading: false,
+          isPostMeme: false,
+          isSaved: false,
+        });
+      }, 2000);
+      return (
+        <div className='mx-auto'>
+          <i class='far fa-10x green-text fa-check-circle'></i>
+          <div className='alert alert-success' role='alert'>
+            تم نشر الميمز بنجاح
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className='mx-auto my-5'>
+        <ReactLoading className='mx-auto' type='spinningBubbles' color='blue' />
       </div>
     );
   };
@@ -152,7 +175,23 @@ const PostSaveMeme = (props) => {
       aria-hidden='true'
     >
       <div className='modal-dialog modal-md rtl' role='document'>
-        {isPostMeme ? postMeme() : saveMeme()}
+        <div className='modal-content'>
+          <div className='modal-header'>
+            <h4 className='modal-title w-100 text-right' id='save-meme'>
+              التنزيل/النشر
+            </h4>
+            <button
+              ref={closeRef}
+              type='button'
+              className='close'
+              data-dismiss='modal'
+              aria-label='Close'
+            >
+              <span aria-hidden='true'>&times;</span>
+            </button>
+          </div>
+          {state.isPostMeme ? postMeme() : saveMeme()}
+        </div>
       </div>
     </div>
   );
@@ -162,4 +201,6 @@ const mapStateToProps = (state) => {
   console.log(state);
   return { saveMeme: state.saveMeme };
 };
-export default connect(mapStateToProps)(PostSaveMeme);
+export default connect(mapStateToProps, {
+  addMeme,
+})(PostSaveMeme);

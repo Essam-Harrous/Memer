@@ -11,7 +11,7 @@ const {
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const cloudinary = require('cloudinary').v2;
+const Cloudinary = require('cloudinary').v2;
 const SECRET_TOKEN_VALUE = require('../config');
 
 const Meme = require('../models/meme');
@@ -217,7 +217,7 @@ const RootQuery = new GraphQLObjectType({
     memes: {
       type: new GraphQLList(MemeType),
       resolve() {
-        return Meme.find({});
+        return Meme.find({}).sort({ _id: -1 });
       },
     },
     meme: {
@@ -246,12 +246,12 @@ const RootQuery = new GraphQLObjectType({
     templates: {
       type: new GraphQLList(TemplateType),
       resolve() {
-        return Template.find({});
+        return Template.find({}).sort({ _id: -1 });
       },
     },
     template: {
       type: TemplateType,
-      args: { id: { type: GraphQLID } },
+      args: { id: { type: new GraphQLNonNull(GraphQLID) } },
       resolve(parent, args) {
         return Template.findById(args.id);
       },
@@ -263,7 +263,13 @@ const RootQuery = new GraphQLObjectType({
         email: { type: GraphQLString },
         password: { type: GraphQLString },
       },
-      async resolve(parent, args) {
+      async resolve(parent, args, context) {
+        //check if userData has a value
+        console.log(context.user);
+        if (context.user) {
+          return context.user;
+        }
+
         //check if the username or the email is correct
         const user = await User.findOne({
           $or: [{ username: args.username }, { email: args.email }],
@@ -276,7 +282,13 @@ const RootQuery = new GraphQLObjectType({
 
         //generate a token for this user
         const token = jwt.sign(
-          { id: user.id, username: user.username, role: user.role },
+          {
+            id: user.id,
+            username: user.username,
+            role: user.role,
+            firstName: user.firstName,
+            lastName: user.lastName,
+          },
           SECRET_TOKEN_VALUE,
           { expiresIn: '2h' }
         );
@@ -310,9 +322,9 @@ const Mutation = new GraphQLObjectType({
         //check if the userneam or the email has been used
         const isUserUsed = await User.exists({ username: args.username });
         const isEmailUsed = await User.exists({ email: args.email });
-        if (isUserUsed) throw new Error(`هذا الإسم غير متوفر ${args.username}`);
+        if (isUserUsed) throw new Error(`هذا الإسم ${args.username} غير متوفر`);
         else if (isEmailUsed)
-          throw new Error(`هذا البريد مستخدم في حسار أخر ${args.email}`);
+          throw new Error(`هذا البريد ${args.email} مستخدم مسبقا`);
 
         //hash the use password via bcrypt library
         const password = await bcrypt.hash(args.password, 12);
@@ -352,25 +364,42 @@ const Mutation = new GraphQLObjectType({
       },
       async resolve(parent, args, { user }) {
         try {
-          //check if the user has a valid
+          console.log('inside a addMeme resolver');
+          //check if the user has a valid token
           if (!user) throw new Error('you need to logIn or signUP');
 
           //check if the meme has a templateId or not
           let templateId;
           if (!args.templateId) {
+            //upload the template to the cloudinary
+            const cloudinaryRes = await Cloudinary.uploader.upload(
+              args.templateUrl,
+              {
+                folder: 'templates',
+              }
+            );
             //create a new template
             templateId = await Template.create({
-              templateUrl: args.templateUrl,
+              templateUrl: cloudinaryRes.secure_url,
               tags: args.tags,
               userId: user.id,
             }).id;
           } else templateId = args.templateId;
+
+          //upload the template to the cloudinary
+          const cloudinaryMemeRes = await Cloudinary.uploader.upload(
+            args.memeUrl,
+            {
+              folder: 'memes',
+            }
+          );
 
           //create a new meme
           return Meme.create({
             ...args,
             userId: user.id,
             templateId,
+            memeUrl: cloudinaryMemeRes.secure_url,
           });
         } catch (err) {
           return err;
@@ -461,18 +490,28 @@ const Mutation = new GraphQLObjectType({
     addTemplate: {
       type: TemplateType,
       args: {
-        templateUrl: { type: GraphQLString },
-        tags: { type: new GraphQLList(GraphQLString) },
+        tags: { type: new GraphQLNonNull(new GraphQLList(GraphQLString)) },
+        templateData: { type: GraphQLString },
       },
       async resolve(parent, args, { user }) {
         try {
           //check if the user has a valid
-          if (!user) throw new Error('you need to logIn or signUP');
+          if (!user) throw new Error('الرجاء تسجيل الدخول أو إنشاء حساب جديد');
+
+          //upload the template image to cloudinary
+          const cloudinaryRes = await Cloudinary.uploader.upload(
+            args.templateData,
+            {
+              folder: 'templates',
+            }
+          );
+          console.log(cloudinaryRes);
 
           //create a new template
           return Template.create({
-            ...args,
+            tags: args.tags,
             userId: user.id,
+            templateUrl: cloudinaryRes.secure_url,
           });
         } catch (err) {
           return err;

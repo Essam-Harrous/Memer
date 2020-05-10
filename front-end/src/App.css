@@ -131,3 +131,22 @@ ul ul a {
 .left {
   left: 0 !important;
 }
+#file-label {
+  top: -12px;
+}
+
+.tagify__input {
+  min-width: unset !important;
+}
+
+.image-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-auto-rows: 10px;
+  grid-gap: 0.5px 10px;
+}
+
+.image-list img {
+  width: 280px;
+  grid-row-end: span 2;
+}

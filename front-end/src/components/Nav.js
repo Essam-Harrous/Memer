@@ -2,43 +2,53 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { logOut } from '../actions';
+
 const Nav = (props) => {
-  //
+  //isLogIn variable
   const isLoggedIn = props.user.token ? true : false;
 
+  //handleLogOut
+  const handleLogOut = () => {
+    //I used setTimeout as a tempararury solution to
+    //avoid the click on the element signIn behind the logOut element
+    setTimeout(() => {
+      props.logOut();
+    }, 50);
+  };
+
+  //return either logOut component or signIn signUp component
   const LogInOrOut = () => {
     if (isLoggedIn) {
       return (
         <li className='nav-item'>
-          <a className='nav-link' href='#'>
-            Log Out
-          </a>
+          <Link onClick={handleLogOut} to='#' className='nav-link'>
+            تسجيل الخروج
+          </Link>
         </li>
       );
     }
     return (
       <>
         <li className='nav-item'>
-          <a
-            type='button'
+          <Link
+            to='#'
             data-toggle='modal'
             data-target='#signIn'
             className='nav-link'
-            href='#'
           >
             تسجيل الدخول
-          </a>
+          </Link>
         </li>
         <li className='nav-item'>
-          <a
-            type='button'
+          <Link
+            to='#'
             data-toggle='modal'
             data-target='#signUp'
             className='nav-link'
-            href='#'
           >
             إنشاء حساب
-          </a>
+          </Link>
         </li>
       </>
     );
@@ -67,12 +77,17 @@ const Nav = (props) => {
       <div className='navbar-collapse collapse w-100 order-3 dual-collapse2'>
         <ul className='navbar-nav ml-auto'>
           <li className='nav-item'>
-            <Link className='nav-link' to='/'>
+            <Link className='nav-link' to='/templates'>
               إنشاء ميمز جديد
             </Link>
           </li>
           <li className='nav-item'>
-            <Link className='nav-link' to='/'>
+            <Link
+              data-toggle='modal'
+              data-target='#addTemplate'
+              className='nav-link'
+              to='#'
+            >
               إضافة قالب ميمز
             </Link>
           </li>
@@ -85,4 +100,4 @@ const Nav = (props) => {
 const mapStateToProps = (state) => {
   return { user: state.user };
 };
-export default connect(mapStateToProps)(Nav);
+export default connect(mapStateToProps, { logOut })(Nav);
