@@ -22,6 +22,7 @@ export const signUp = (userData, setLoading) => async (dispatch) => {
       username
       token
       id
+      avatar
     }
   }`;
   try {
@@ -53,6 +54,7 @@ export const logIn = (userData, setLoading) => async (dispatch) => {
       username
       token
       id
+      avatar
     }
   }`;
   try {
@@ -173,6 +175,7 @@ export const checkToken = () => async (dispatch) => {
         lastName: data.lastName,
         username: data.username,
         token: localStorage.getItem('token'),
+        avatar: data.avatar,
       };
       dispatch({ type: 'SIGN_SUCCESS', payload: userObj });
     }
@@ -200,10 +203,12 @@ export const addMeme = (memeObj, setState) => async (dispatch) => {
       addMeme(${queryParams}) {
         id
         memeUrl
-        likes
-        disLikes
+        peopleLikes
+        peopleDisLikes
         tags
+        content
         user {
+          avatar
           id
           firstName
           lastName
@@ -212,6 +217,17 @@ export const addMeme = (memeObj, setState) => async (dispatch) => {
         template {
           id
           tags
+        }
+        comments {
+          id
+          content
+          user {
+            avatar
+            id
+            firstName
+            lastName
+            username
+          }
         }
       }
     }`;
@@ -250,11 +266,12 @@ export const fetchMemes = () => async (dispatch) => {
       memes {
         id
         memeUrl
-        likes
-        disLikes
+        peopleLikes
+        peopleDisLikes
         tags
         content
         user {
+          avatar
           id
           firstName
           lastName
@@ -264,6 +281,17 @@ export const fetchMemes = () => async (dispatch) => {
           id
           tags
         }
+        comments {
+          id
+          content
+          user {
+            avatar
+            id
+            firstName
+            lastName
+            username
+          }
+        }
       }
     }`;
 
@@ -272,6 +300,213 @@ export const fetchMemes = () => async (dispatch) => {
     console.log(response);
     dispatch({ type: 'FETCH_MEMES', payload: response.memes });
   } catch (err) {
+    console.log(err.response);
+  }
+};
+
+//add like
+export const addLike = (meme, userId) => async (dispatch) => {
+  try {
+    const query = `mutation{
+      addLike(memeId: "${meme.id}", receiverId: "${meme.user.id}") {
+        id
+      }
+    }`;
+    const client = new GraphQLClient(_serverUrl, {
+      headers: {
+        Authorization: `bearer ${localStorage.getItem('token')}`,
+      },
+    });
+
+    const response = await client.request(query);
+    dispatch({
+      type: 'ADD_LIKE',
+      payload: { memeId: meme.id, userId: userId },
+    });
+
+    console.log(response);
+  } catch (err) {
     console.log(err);
+  }
+};
+
+//remove like
+export const removeLike = (meme, userId) => async (dispatch) => {
+  try {
+    const query = `mutation{
+      removeLike(memeId: "${meme.id}") {
+        id
+      }
+    }`;
+    const client = new GraphQLClient(_serverUrl, {
+      headers: {
+        Authorization: `bearer ${localStorage.getItem('token')}`,
+      },
+    });
+
+    const response = await client.request(query);
+    dispatch({
+      type: 'REMOVE_LIKE',
+      payload: { memeId: meme.id, userId: userId },
+    });
+
+    console.log(response);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+//add disLike
+export const addDisLike = (meme, userId) => async (dispatch) => {
+  try {
+    const query = `mutation{
+      addDisLike(memeId: "${meme.id}", receiverId: "${meme.user.id}") {
+        id
+      }
+    }`;
+    const client = new GraphQLClient(_serverUrl, {
+      headers: {
+        Authorization: `bearer ${localStorage.getItem('token')}`,
+      },
+    });
+
+    const response = await client.request(query);
+    dispatch({
+      type: 'ADD_DIS_LIKE',
+      payload: { memeId: meme.id, userId: userId },
+    });
+
+    console.log(response);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+//remove disLike
+export const removeDisLike = (meme, userId) => async (dispatch) => {
+  try {
+    const query = `mutation{
+      removeDisLike(memeId: "${meme.id}") {
+        id
+      }
+    }`;
+    const client = new GraphQLClient(_serverUrl, {
+      headers: {
+        Authorization: `bearer ${localStorage.getItem('token')}`,
+      },
+    });
+
+    const response = await client.request(query);
+    dispatch({
+      type: 'REMOVE_DIS_LIKE',
+      payload: { memeId: meme.id, userId: userId },
+    });
+
+    console.log(response);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+//select current meme
+export const selectMeme = (memeData) => {
+  console.log(memeData);
+  return { type: 'SELECT_MEME', payload: memeData };
+};
+
+//add comment
+export const addComment = (data, setLoading) => async (dispatch) => {
+  try {
+    const query = `mutation {
+      addComment(memeId: "${data.memeId}", receiverId: "${data.receiverId}", content: "${data.content}") {
+        id
+        content
+        user {
+          avatar
+          id
+          firstName
+          lastName
+          username
+        }
+      }
+    }`;
+
+    const client = new GraphQLClient(_serverUrl, {
+      headers: {
+        Authorization: `bearer ${localStorage.getItem('token')}`,
+      },
+    });
+
+    const response = await client.request(query);
+
+    //setLoading state to the addComment component
+    setLoading(false);
+
+    //dispatch the action to the reducer
+    dispatch({ type: 'ADD_COMMENT', payload: response.addComment });
+    console.log(response);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const fetchNotifications = () => async (dispatch) => {
+  try {
+    const query = `{
+      notifications {
+        id
+        type
+        sender {
+          id
+          firstName
+          lastName
+          username
+        }
+        meme {
+          id
+          memeUrl
+          peopleLikes
+          peopleDisLikes
+          tags
+          content
+          user {
+            avatar
+            id
+            firstName
+            lastName
+            username
+          }
+          template {
+            id
+            tags
+          }
+          comments {
+            id
+            content
+            user {
+              avatar
+              id
+              firstName
+              lastName
+              username
+            }
+          }
+        }
+      }
+    }`;
+
+    const client = new GraphQLClient(_serverUrl, {
+      headers: {
+        Authorization: `bearer ${localStorage.getItem('token')}`,
+      },
+    });
+
+    const response = await client.request(query);
+    console.log(response);
+
+    //dispatch the response to the reducer
+    dispatch({ type: 'FETCH_NOTIFICATIONS', payload: response.notifications });
+  } catch (err) {
+    console.log(err.response);
   }
 };

@@ -3,6 +3,7 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { connect } from 'react-redux';
 import ReactLoading from 'react-loading';
+import _ from 'lodash';
 
 //actions
 import { signUp } from '../../actions';
@@ -20,15 +21,15 @@ const SignUp = (props) => {
     lastName: yup
       .string()
       .min(3, 'الرجاء إدخال 3 خانات على الأقل')
-      .required('الرجاء إدخال إسم المستخدم'),
+      .required('الرجاء إدخال اللقب '),
     username: yup
       .string()
       .min(3, 'الرجاء إدخال 3 خانات على الأقل')
       .matches(
         /^[a-z0-9-_.]+$/,
-        'الرجاء إدخال إسم المستخدم باللغة الإنجليزية و بدون مسافة'
+        'الرجاء إدخال إسم المستخدم باللغة الإنجليزية و بدون مسافة و بحروف صغيرة'
       )
-      .required('الرجاء إدخال اللقب'),
+      .required('الرجاء إدخال إسم المستخدم'),
     email: yup
       .string()
       .email('الرجاء إدخال بريد إلكتروني صحيح')
@@ -53,6 +54,10 @@ const SignUp = (props) => {
       confirmPassword: '',
     },
     onSubmit: (values) => {
+      values.firstName = _.escape(values.firstName);
+      values.lastName = _.escape(values.lastName);
+      values.email = _.escape(values.email);
+      console.log(values);
       props.signUp(values, setLoading);
       setLoading(true);
     },

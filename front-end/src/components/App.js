@@ -12,6 +12,7 @@ import Editor from './MainViews/Editor';
 import SignIn from './Modals/SignIn';
 import SignUp from './Modals/SignUp';
 import AddTemplate from './Modals/AddTemplate';
+import Notifications from './MainViews/Notifications';
 
 class App extends React.Component {
   render() {
@@ -41,6 +42,7 @@ class App extends React.Component {
               <Route path='/' exact component={MemesContainer} />
               <Route path='/editor/:id' exact component={Editor} />
               <Route path='/templates' exact component={TemplatesContainer} />
+              <Route path='/notifications' exact component={Notifications} />
             </Switch>
             <SlideBar />
           </div>

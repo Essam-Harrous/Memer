@@ -22,14 +22,18 @@ const memeSchema = new Schema({
     type: String,
     trim: true,
   },
-  likes: {
-    type: Number,
-    default: 0,
-  },
-  disLikes: {
-    type: Number,
-    default: 0,
-  },
+  peopleLikes: [
+    {
+      type: Schema.Types.ObjectId,
+      trim: true,
+    },
+  ],
+  peopleDisLikes: [
+    {
+      type: Schema.Types.ObjectId,
+      trim: true,
+    },
+  ],
   comments: [
     {
       type: Schema.Types.ObjectId,

@@ -51,14 +51,13 @@ app.use(
     graphiql: true,
     context: {
       user: req.user,
-      image: req.body,
-      memeUrl: req.body.meme,
     },
   }))
 );
 
 app.get('/auth', (req, res) => {
   if (req.user) {
+    console.log(req.user);
     res.json(req.user);
   } else res.json({ err: 'you need to logIn or signUp' });
 });

@@ -151,7 +151,7 @@ const PostSaveMeme = (props) => {
       }, 2000);
       return (
         <div className='mx-auto'>
-          <i class='far fa-10x green-text fa-check-circle'></i>
+          <i className='far fa-10x green-text fa-check-circle'></i>
           <div className='alert alert-success' role='alert'>
             تم نشر الميمز بنجاح
           </div>

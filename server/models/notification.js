@@ -13,9 +13,6 @@ const notificationSchema = new Schema({
     ref: 'user',
     trim: true,
   },
-  date: {
-    type: Date,
-  },
   memeId: {
     type: Schema.Types.ObjectId,
     ref: 'Meme',

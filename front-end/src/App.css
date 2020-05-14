@@ -118,7 +118,7 @@ ul ul a {
 }
 
 #meme-container {
-  max-width: 800px;
+  max-width: 500px;
 }
 
 .rtl {
@@ -149,4 +149,17 @@ ul ul a {
 .image-list img {
   width: 280px;
   grid-row-end: span 2;
+}
+
+.comment-body {
+  max-height: calc(100vh - 195px);
+  overflow-y: auto;
+}
+
+#send {
+  box-shadow: unset;
+}
+
+.avatar {
+  width: 50px;
 }

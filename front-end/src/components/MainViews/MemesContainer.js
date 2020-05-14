@@ -6,6 +6,7 @@ import ReactLoading from 'react-loading';
 import { fetchMemes } from '../../actions';
 
 import Meme from './Meme';
+import Comments from '../Modals/Comments';
 
 const MemesContainer = (props) => {
   //use useEffect to request the memes list from the server
@@ -35,6 +36,7 @@ const MemesContainer = (props) => {
   console.log(props);
   return (
     <main className='col-md-6 my-3 ml-md-5 mx-auto bd-content'>
+      <Comments />
       {renderMemes()}
     </main>
   );

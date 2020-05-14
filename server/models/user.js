@@ -25,26 +25,11 @@ const userSchema = new Schema({
     type: String,
     trim: true,
     unique: true,
-    index: true,
   },
-  memes: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Meme',
-    },
-  ],
-  templates: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Template',
-    },
-  ],
-  notifications: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Notification',
-    },
-  ],
+  avatar: {
+    type: String,
+    trim: true,
+  },
   role: { type: Number, default: 0 },
 });
 

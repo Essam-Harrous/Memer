@@ -34,6 +34,10 @@
       }
     </style>
     <link rel="stylesheet" href="../spinner.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/placeholder-loading/dist/css/placeholder-loading.min.css"
+    />
 
     <!--
       semantic ui link
@@ -152,11 +156,6 @@
       });
 
       $('#body').on('click', () => {
-        console.log('hi');
-        console.log(
-          $('#sidebar'),
-          $('#sidebar')[0].classList.contains('active')
-        );
         if ($('#sidebar')[0].classList.contains('active')) {
           $('#sidebar').toggleClass('active');
         }

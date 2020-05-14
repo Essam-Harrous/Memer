@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { connect } from 'react-redux';
 import ReactLoading from 'react-loading';
+import _ from 'lodash';
 
 import { logIn } from '../../actions';
 
@@ -27,7 +28,9 @@ const SignIn = React.memo((props) => {
         props.logIn(
           {
             password: values.password,
-            usernameEmail: `email: "${values.usernameEmail}"`,
+            usernameEmail: `email: "${_.escapeRegExp(
+              _.escape(values.usernameEmail)
+            )}"`,
           },
           setLoading
         );
@@ -35,7 +38,9 @@ const SignIn = React.memo((props) => {
         props.logIn(
           {
             password: values.password,
-            usernameEmail: `username: "${values.usernameEmail}"`,
+            usernameEmail: `username: "${_.escapeRegExp(
+              _.escape(values.usernameEmail)
+            )}"`,
           },
           setLoading
         );

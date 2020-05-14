@@ -21,12 +21,12 @@ const SlideBar = (props) => {
       return (
         <div className='media text-right rtl'>
           <img
-            className='d-flex ml-3 rounded-circle'
-            src='https://mdbootstrap.com/img/Photos/Others/placeholder1.jpg'
+            className='d-flex ml-3 avatar rounded-circle'
+            src={props.user.avatar}
             alt='Generic placeholder image'
           />
-          <div className='media-body mt-2'>
-            <h5 className='font-weight-bold'>
+          <div className='media-body'>
+            <h5 className='font-weight-bold mb-0'>
               {props.user.firstName + ' ' + props.user.lastName}
             </h5>
             <small>إسم المستخدم: {props.user.username}@</small>
@@ -155,7 +155,7 @@ const SlideBar = (props) => {
           <a href='#'>ميمز قمت بإنشاءها</a>
         </li>
         <li>
-          <a href='#'>الإشعارات</a>
+          <Link to='/notifications'>الإشعارات</Link>
         </li>
         <li>
           <a href='#'>تطبيق الموبايل</a>
@@ -202,13 +202,13 @@ const SlideBar = (props) => {
             <p className='white-text'>developed by Essam Harous</p>
             <div className='d-flex justify-content-around'>
               <a href='https://web.facebook.com/faragharoos' target='_blank'>
-                <i class='fab fa-facebook-f fa-2x'></i>
+                <i className='fab fa-facebook-f fa-2x'></i>
               </a>
               <a href='https://github.com/Essam-Harrous' target='_blank'>
-                <i class='fab fa-2x fa-github'></i>
+                <i className='fab fa-2x fa-github'></i>
               </a>
               <a href='https://twitter.com/EssamHarous' target='_blank'>
-                <i class='fab fa-2x fa-twitter'></i>
+                <i className='fab fa-2x fa-twitter'></i>
               </a>
             </div>
           </div>
