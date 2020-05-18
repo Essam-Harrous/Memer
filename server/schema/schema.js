@@ -13,7 +13,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Cloudinary = require('cloudinary').v2;
 const gravatar = require('gravatar');
-const SECRET_TOKEN_VALUE = require('../config');
 
 const Meme = require('../models/meme');
 const Ad = require('../models/ad');
@@ -283,7 +282,7 @@ const RootQuery = new GraphQLObjectType({
             lastName: user.lastName,
             avatar: user.avatar,
           },
-          SECRET_TOKEN_VALUE,
+          process.env.SECRET_TOKEN_VALUE,
           { expiresIn: '2h' }
         );
 
