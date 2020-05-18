@@ -37,7 +37,7 @@ cloudinary.config({
 });
 
 app.use(
-  jwt({ secret: process.env.TOKEN_SECRET_VALUE, credentialsRequired: false }),
+  jwt({ secret: 'esso esso esoo', credentialsRequired: false }),
   (err, req, res, next) => {
     if (err.code) return next();
     return next(err);
