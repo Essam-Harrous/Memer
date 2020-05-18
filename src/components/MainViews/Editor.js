@@ -26,7 +26,7 @@ const Editor = (props) => {
       var pixie = new window.Pixie({
         crossOrigin: true,
         watermarkText: 'Memer.ly',
-        // baseUrl: '/',
+        baseUrl: window.location.origin,
         onLoad: function () {
           window.postMessage('pixieLoaded', '*');
         },
