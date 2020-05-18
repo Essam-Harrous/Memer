@@ -60,7 +60,7 @@ const Nav = (props) => {
       </div>
       <div className='mx-auto order-0'>
         <Link to='/' className='navbar-brand mx-auto'>
-          {/* <img src='https://res.cloudinary.com/essam/image/upload/v1589497164/memer_n1ozxp.png' /> */}
+          <img src='https://picresize.com/popup.html?images/rsz_1memer_n1ozxp.png' />
         </Link>
       </div>
       {/* <button
