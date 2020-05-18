@@ -9,7 +9,7 @@ const cors = require('cors');
 
 const schema = require('./schema/schema');
 // const test = require('./models/test');
-
+console.log(process.env.TOKEN_SECRET_VALUE);
 const app = express();
 
 app.use(cors());
