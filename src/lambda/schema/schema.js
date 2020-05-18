@@ -283,7 +283,7 @@ const RootQuery = new GraphQLObjectType({
             lastName: user.lastName,
             avatar: user.avatar,
           },
-          process.env.SECRET_TOKEN_VALUE,
+          process.env.TOKEN_SECRET_VALUE,
           { expiresIn: '2h' }
         );
 
@@ -364,7 +364,7 @@ const Mutation = new GraphQLObjectType({
             lastName: newUser.lastName,
             avatar: newUser.avatar,
           },
-          process.env.SECRET_TOKEN_VALUE,
+          process.env.TOKEN_SECRET_VALUE,
           { expiresIn: '2h' }
         );
 
