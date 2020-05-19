@@ -207,7 +207,8 @@ const RootQuery = new GraphQLObjectType({
     customMemes: {
       type: new GraphQLList(MemeType),
       args: { tags: { type: new GraphQLList(GraphQLString) } },
-      resolve() {
+      resolve(parent, args) {
+        console.log(args.tags, 'haaaaaaaaaaaaaai');
         return Meme.find({
           $or: [
             { tags: { $regex: getRegex(args.tags) } },

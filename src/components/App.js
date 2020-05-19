@@ -14,6 +14,7 @@ import SignUp from './Modals/SignUp';
 import AddTemplate from './Modals/AddTemplate';
 import Notifications from './MainViews/Notifications';
 import MyMemes from './MainViews/MyMemes';
+import CustomMemes from './MainViews/customMemes';
 import Search from './Search';
 
 class App extends React.Component {
@@ -33,6 +34,7 @@ class App extends React.Component {
               <Route path='/templates' exact component={TemplatesContainer} />
               <Route path='/notifications' exact component={Notifications} />
               <Route path='/myMemes' exact component={MyMemes} />
+              <Route path='/customMemes' exact component={CustomMemes} />
             </Switch>
             <SlideBar />
           </div>

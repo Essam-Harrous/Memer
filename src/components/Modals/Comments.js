@@ -74,7 +74,7 @@ const Comments = (props) => {
                 onChange={fromik.handleChange}
                 placeholder='أكتب تعليق...'
               ></textarea>
-              <button type='submit box-shadow-unset' className='px-1 btn'>
+              <button type='submit' className='px-1 btn box-shadow-unset'>
                 <i class='far fa-2x fa-paper-plane'></i>
               </button>
             </form>

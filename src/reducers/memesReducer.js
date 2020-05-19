@@ -2,6 +2,7 @@ const INITIAL_VALUE = {
   lastMemes: [],
   myMemes: [],
   bestMemes: [],
+  customMemes: [],
 };
 
 export default (state = INITIAL_VALUE, action) => {
@@ -27,6 +28,11 @@ export default (state = INITIAL_VALUE, action) => {
         ...state,
         myMemes: action.payload,
       };
+    case 'FETCH_CUSTOM_MEMES':
+      return {
+        ...state,
+        customMemes: action.payload,
+      };
     case 'ADD_LIKE':
       return {
         ...state,
@@ -49,6 +55,15 @@ export default (state = INITIAL_VALUE, action) => {
           return meme;
         }),
         myMemes: state.myMemes.map((meme) => {
+          if (meme.id === action.payload.memeId) {
+            return {
+              ...meme,
+              peopleLikes: [...meme.peopleLikes, action.payload.userId],
+            };
+          }
+          return meme;
+        }),
+        customMemes: state.customMemes.map((meme) => {
           if (meme.id === action.payload.memeId) {
             return {
               ...meme,
@@ -94,6 +109,17 @@ export default (state = INITIAL_VALUE, action) => {
           }
           return meme;
         }),
+        cutomMemes: state.cutomMemes.map((meme) => {
+          if (meme.id === action.payload.memeId) {
+            return {
+              ...meme,
+              peopleLikes: meme.peopleLikes.filter(
+                (peopleId) => peopleId != action.payload.userId
+              ),
+            };
+          }
+          return meme;
+        }),
       };
     case 'ADD_DIS_LIKE':
       return {
@@ -117,6 +143,15 @@ export default (state = INITIAL_VALUE, action) => {
           return meme;
         }),
         myMemes: state.myMemes.map((meme) => {
+          if (meme.id === action.payload.memeId) {
+            return {
+              ...meme,
+              peopleDisLikes: [...meme.peopleDisLikes, action.payload.userId],
+            };
+          }
+          return meme;
+        }),
+        customMemes: state.customMemes.map((meme) => {
           if (meme.id === action.payload.memeId) {
             return {
               ...meme,
@@ -152,6 +187,17 @@ export default (state = INITIAL_VALUE, action) => {
           return meme;
         }),
         myMemes: state.myMemes.map((meme) => {
+          if (meme.id === action.payload.memeId) {
+            return {
+              ...meme,
+              peopleDisLikes: meme.peopleLikes.filter(
+                (peopleId) => peopleId != action.payload.userId
+              ),
+            };
+          }
+          return meme;
+        }),
+        customMemes: state.customMemes.map((meme) => {
           if (meme.id === action.payload.memeId) {
             return {
               ...meme,

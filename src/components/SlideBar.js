@@ -164,7 +164,16 @@ const SlideBar = (props) => {
           </Link>
         </li>
         <li>
-          <Link to='/notifications'>الإشعارات</Link>
+          <Link
+            onClick={() => {
+              if (!props.user.id) {
+                alert('الرجاء تسجيل الدخول أو قم بإنشاء حساب جديد');
+              }
+            }}
+            to='/notifications'
+          >
+            الإشعارات
+          </Link>
         </li>
         <li>
           <a className='no' href='#'>

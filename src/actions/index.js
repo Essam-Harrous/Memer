@@ -1,5 +1,6 @@
 import { request, GraphQLClient } from 'graphql-request';
 import axios from 'axios';
+import history from '../history';
 
 const _serverUrl = '/.netlify/functions/api/graphql';
 
@@ -304,6 +305,52 @@ export const fetchLastMemes = () => async (dispatch) => {
     console.log(err.response);
   }
 };
+//fetch the custom memes
+export const fetchCustomMemes = (tags) => async (dispatch) => {
+  try {
+    //initialize the graphQl query
+    const query = `{
+      customMemes(tags: [${tags}]) {
+        id
+        memeUrl
+        peopleLikes
+        peopleDisLikes
+        tags
+        content
+        user {
+          avatar
+          id
+          firstName
+          lastName
+          username
+        }
+        template {
+          id
+          tags
+        }
+        comments {
+          id
+          content
+          user {
+            avatar
+            id
+            firstName
+            lastName
+            username
+          }
+        }
+      }
+    }`;
+
+    //post a request to the server to fetch all memes
+    const response = await request(_serverUrl, query);
+    console.log(response);
+    dispatch({ type: 'FETCH_CUSTOM_MEMES', payload: response.customMemes });
+    history.push('/customMemes');
+  } catch (err) {
+    console.log(err.response);
+  }
+};
 
 //fetch my memes
 export const fetchMyMemes = () => async (dispatch) => {
@@ -565,6 +612,7 @@ export const fetchNotifications = () => async (dispatch) => {
     dispatch({ type: 'FETCH_NOTIFICATIONS', payload: response.notifications });
   } catch (err) {
     console.log(err.response);
+    dispatch({ type: 'ERROR', payload: err.response.errors[0].message });
   }
 };
 

@@ -9,10 +9,9 @@ import { fetchNotifications } from '../../actions';
 const Notifications = (props) => {
   //using use effect to request the notification from the server
   useEffect(() => {
-    props.fetchNotifications();
     if (!props.user.id) {
       return <Redirect to='/' />;
-    }
+    } else props.fetchNotifications();
   }, []);
 
   //render notifications
