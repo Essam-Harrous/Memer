@@ -308,6 +308,7 @@ export const fetchLastMemes = () => async (dispatch) => {
 //fetch the custom memes
 export const fetchCustomMemes = (tags) => async (dispatch) => {
   try {
+    console.log(tags);
     //initialize the graphQl query
     const query = `{
       customMemes(tags: [${tags}]) {
