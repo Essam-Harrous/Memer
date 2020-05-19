@@ -14,7 +14,7 @@ import SignUp from './Modals/SignUp';
 import AddTemplate from './Modals/AddTemplate';
 import Notifications from './MainViews/Notifications';
 import MyMemes from './MainViews/MyMemes';
-import CustomMemes from './MainViews/customMemes';
+import CustomMemes from './MainViews/CustomMemes';
 import Search from './Search';
 
 class App extends React.Component {
