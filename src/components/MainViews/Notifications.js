@@ -9,9 +9,7 @@ import { fetchNotifications } from '../../actions';
 const Notifications = (props) => {
   //using use effect to request the notification from the server
   useEffect(() => {
-    if (!props.user.id) {
-      return <Redirect to='/' />;
-    } else props.fetchNotifications();
+    props.fetchNotifications();
   }, []);
 
   //render notifications
@@ -43,6 +41,7 @@ const Notifications = (props) => {
   //return main component
   return (
     <main className='col-md-5 my-3 ml-md-5 mx-auto bd-content'>
+      {!props.user.id ? <Redirect to='/' /> : null}
       <div>Notifications</div>
       {renderNotifications()}
     </main>

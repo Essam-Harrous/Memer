@@ -11,7 +11,9 @@ const Search = (props) => {
   }, []);
 
   const strToArr = (str) => {
-    return str.split(' ');
+    return str.split(' ').map((tag) => {
+      return `"${tag}"`;
+    });
   };
 
   const formik = useFormik({
@@ -29,7 +31,7 @@ const Search = (props) => {
       return props.tags.map((tag) => {
         return (
           <button
-            onClick={() => props.fetchCustomMemes([tag])}
+            onClick={() => props.fetchCustomMemes([`"${tag}"`])}
             className='m-2 btn p-1 box-shadow-unset tags'
           >
             {tag}
