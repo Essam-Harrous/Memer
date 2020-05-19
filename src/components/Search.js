@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchTags, fetchCustomMemes } from '../actions';
 import { useFormik } from 'formik';
+import ReactLoading from 'react-loading';
+
+import { fetchTags, fetchCustomMemes } from '../actions';
 
 const Search = (props) => {
   useEffect(() => {
