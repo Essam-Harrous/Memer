@@ -343,6 +343,7 @@ export const fetchCustomMemes = (tags) => async (dispatch) => {
       }
     }`;
 
+    console.log(query);
     //post a request to the server to fetch all memes
     const response = await request(_serverUrl, query);
     console.log(response);
