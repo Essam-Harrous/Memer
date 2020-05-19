@@ -156,8 +156,12 @@
       });
 
       $('#body').on('click', (e) => {
-        console.log('event ', e);
-        if ($('#sidebar')[0].classList.contains('active')) {
+        console.log('event ', e.target.className);
+
+        if (
+          $('#sidebar')[0].classList.contains('active') &&
+          !e.target.className.includes('no')
+        ) {
           $('#sidebar').toggleClass('active');
         }
       });

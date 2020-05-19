@@ -19,17 +19,17 @@ const SlideBar = (props) => {
   const userInfo = () => {
     if (props.user.firstName) {
       return (
-        <div className='media text-right rtl'>
+        <div className='no media text-right rtl'>
           <img
-            className='d-flex ml-3 avatar rounded-circle'
+            className='no d-flex ml-3 avatar rounded-circle'
             src={props.user.avatar}
             alt='Generic placeholder image'
           />
-          <div className='media-body'>
-            <h5 className='font-weight-bold mb-0'>
+          <div className='no media-body'>
+            <h5 className='no font-weight-bold mb-0'>
               {props.user.firstName + ' ' + props.user.lastName}
             </h5>
-            <small>إسم المستخدم: {props.user.username}@</small>
+            <small className='no'>إسم المستخدم: {props.user.username}@</small>
           </div>
         </div>
       );
@@ -76,14 +76,14 @@ const SlideBar = (props) => {
 
   return (
     <nav id='sidebar'>
-      <div className='sidebar-header mt-3'>{userInfo()}</div>
+      <div className='no sidebar-header mt-3'>{userInfo()}</div>
 
-      <ul className='list-unstyled components pt-0 text-right'>
-        <div className='d-md-none'>
-          <form className='form-inline d-flex justify-content-center md-form form-sm mt-0 mb-1'>
+      <ul className='no list-unstyled components pt-0 text-right'>
+        <div className='no d-md-none'>
+          <form className='no form-inline d-flex justify-content-center md-form form-sm mt-0 mb-1'>
             <i className='fas fa-search' aria-hidden='true'></i>
             <input
-              className='form-control form-control-sm ml-3 w-75 text-right'
+              className='no form-control form-control-sm ml-3 w-75 text-right'
               type='text'
               placeholder='البحث'
               aria-label='Search'
@@ -114,7 +114,7 @@ const SlideBar = (props) => {
             href='#memes'
             data-toggle='collapse'
             aria-expanded='false'
-            className='dropdown-toggle'
+            className='no dropdown-toggle'
           >
             ميمز / Memes
           </a>
@@ -135,7 +135,7 @@ const SlideBar = (props) => {
             href='#best-memers'
             data-toggle='collapse'
             aria-expanded='false'
-            className='dropdown-toggle'
+            className='no dropdown-toggle'
           >
             أفضل الميمرز
           </a>
@@ -167,10 +167,14 @@ const SlideBar = (props) => {
           <Link to='/notifications'>الإشعارات</Link>
         </li>
         <li>
-          <a href='#'>تطبيق الموبايل</a>
+          <a className='no' href='#'>
+            تطبيق الموبايل
+          </a>
         </li>
         <li>
-          <a href='#'>إعدادات</a>
+          <a className='no' href='#'>
+            إعدادات
+          </a>
         </li>
         {/* <li>
           <a
@@ -203,13 +207,13 @@ const SlideBar = (props) => {
 
       <footer
         style={{ backgroundColor: '#7386d5' }}
-        className='page-footer font-small pt-4'
+        className='no page-footer font-small pt-4'
       >
-        <div className='container-fluid text-center'>
+        <div className='no container-fluid text-center'>
           <div className='mb-3'>
-            <h5 className='text-uppercase'>contact</h5>
-            <p className='white-text'>developed by Essam Harous</p>
-            <div className='d-flex justify-content-around'>
+            <h5 className='no text-uppercase'>contact</h5>
+            <p className='no white-text'>developed by Essam Harous</p>
+            <div className='no d-flex justify-content-around'>
               <a href='https://web.facebook.com/faragharoos' target='_blank'>
                 <i className='fab fa-facebook-f fa-2x'></i>
               </a>
@@ -223,7 +227,7 @@ const SlideBar = (props) => {
           </div>
         </div>
 
-        <div className='footer-copyright text-center py-3'>
+        <div className='no footer-copyright text-center py-3'>
           © 2020 Copyright: &nbsp;
           <a href='#'>Memer.ly</a>
         </div>
