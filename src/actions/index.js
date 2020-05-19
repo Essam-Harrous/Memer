@@ -517,6 +517,7 @@ export const fetchNotifications = () => async (dispatch) => {
           firstName
           lastName
           username
+          avatar
         }
         meme {
           id

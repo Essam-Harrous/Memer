@@ -204,6 +204,18 @@ const RootQuery = new GraphQLObjectType({
         return Meme.find({}).sort({ _id: -1 });
       },
     },
+    customMemes: {
+      type: new GraphQLList(MemeType),
+      args: { tags: { type: new GraphQLList(GraphQLString) } },
+      resolve() {
+        return Meme.find({
+          $or: [
+            { tags: { $regex: getRegex(args.tags) } },
+            { content: { $regex: getRegex(args.tags) } },
+          ],
+        }).sort({ _id: -1 });
+      },
+    },
     myMemes: {
       type: new GraphQLList(MemeType),
       resolve(parent, args, { user }) {
@@ -858,3 +870,12 @@ module.exports = new GraphQLSchema({
   query: RootQuery,
   mutation: Mutation,
 });
+
+const getRegex = (arr) => {
+  let regexValue = ``;
+  arr.map((elm, i) => {
+    if (i < arr.length - 1) regexValue += `.*${elm}.*|`;
+    else regexValue += `.*${elm}.*`;
+  });
+  return regexValue;
+};
