@@ -1,11 +1,30 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { useFormik } from 'formik';
 
 import { checkToken } from '../actions';
 import { logOut } from '../actions';
+import { fetchCustomMemes } from '../actions';
 
 const SlideBar = (props) => {
+  const strToArr = (str) => {
+    return str.split(' ').map((tag) => {
+      return `"${tag}"`;
+    });
+  };
+
+  //formik initialization
+  const formik = useFormik({
+    initialValues: {
+      content: '',
+    },
+    onSubmit: ({ content }) => {
+      console.log(content);
+      props.fetchCustomMemes(strToArr(content));
+    },
+  });
+
   //handleLogOut
   const handleLogOut = () => {
     //I used setTimeout as a tempararury solution to
@@ -80,9 +99,16 @@ const SlideBar = (props) => {
 
       <ul className='no list-unstyled components pt-0 text-right'>
         <div className='no d-md-none'>
-          <form className='no form-inline d-flex justify-content-center md-form form-sm mt-0 mb-1'>
-            <i className='fas fa-search' aria-hidden='true'></i>
+          <form
+            onSubmit={formik.handleSubmit}
+            className='no form-inline d-flex justify-content-center md-form form-sm mt-0 mb-1'
+          >
+            <button className='px-1 btn box-shadow-unset' type='submit'>
+              <i className='fas fa-search' aria-hidden='true'></i>
+            </button>
             <input
+              name='content'
+              onChange={formik.handleChange}
               className='no form-control form-control-sm ml-3 w-75 text-right'
               type='text'
               placeholder='البحث'
@@ -248,7 +274,9 @@ const SlideBar = (props) => {
 const mapStateToProps = (state) => {
   return { user: state.user };
 };
+
 export default connect(mapStateToProps, {
   checkToken,
   logOut,
+  fetchCustomMemes,
 })(SlideBar);
