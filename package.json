@@ -12,6 +12,8 @@
     "cloudinary": "^1.21.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
+    "dotenv-expand": "^5.1.0",
+    "env-cmd": "^10.1.0",
     "express": "^4.17.1",
     "express-graphql": "^0.9.0",
     "express-jwt": "^5.3.3",
@@ -41,7 +43,7 @@
   },
   "scripts": {
     "start": "run-p start:**",
-    "start:app": "react-scripts start",
+    "start:app": "env-cmd -f .env react-scripts start",
     "start:lambda": "netlify-lambda serve --config ./config/webpack.functions.js src/lambda",
     "build": "run-p build:**",
     "build:app": "react-scripts build",

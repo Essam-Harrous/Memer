@@ -1,8 +1,12 @@
 import { request, GraphQLClient } from 'graphql-request';
 import axios from 'axios';
 import history from '../history';
-
-const _serverUrl = '/.netlify/functions/api/graphql';
+// import _ from '../env';
+// import dotenv from 'dotenv';
+// import dotenvExpand from 'dotenv-expand';
+// dotenvExpand(dotenv.config());
+console.log(process.env);
+// const process.env.REACT_APP_SERVER_URL = '/.netlify/functions/api/graphql';
 
 //
 export const saveMeme = (memeUrl, setState) => {
@@ -27,7 +31,7 @@ export const signUp = (userData, setLoading) => async (dispatch) => {
     }
   }`;
   try {
-    const res = await request(_serverUrl, query);
+    const res = await request(process.env.REACT_APP_SERVER_URL, query);
     console.log(res);
     dispatch({ type: 'SIGN_SUCCESS', payload: res.signUp });
     localStorage.setItem('token', res.signUp.token);
@@ -59,7 +63,7 @@ export const logIn = (userData, setLoading) => async (dispatch) => {
     }
   }`;
   try {
-    const res = await request(_serverUrl, query);
+    const res = await request(process.env.REACT_APP_SERVER_URL, query);
     console.log(res);
     setLoading(false);
     const modal = document.getElementById('close-signIn');
@@ -109,7 +113,7 @@ export const addTemplate = (template, setLoading) => async (dispatch) => {
         }
       }`;
       //create the authorization header
-      const client = new GraphQLClient(_serverUrl, {
+      const client = new GraphQLClient(process.env.REACT_APP_SERVER_URL, {
         headers: {
           Authorization: `bearer ${localStorage.getItem('token')}`,
         },
@@ -150,7 +154,7 @@ export const getTemplates = () => async (dispatch) => {
       }
     }`;
     console.log('i am in action');
-    const response = await request(_serverUrl, query);
+    const response = await request(process.env.REACT_APP_SERVER_URL, query);
     dispatch({ type: 'GET_TEMPLATES', payload: response.templates });
     console.log(response);
   } catch (err) {
@@ -235,7 +239,7 @@ export const addMeme = (memeObj, setState) => async (dispatch) => {
     console.log('query', query);
 
     //initialize the graphQl request
-    const client = new GraphQLClient(_serverUrl, {
+    const client = new GraphQLClient(process.env.REACT_APP_SERVER_URL, {
       headers: {
         Authorization: `bearer ${localStorage.getItem('token')}`,
       },
@@ -298,7 +302,7 @@ export const fetchLastMemes = () => async (dispatch) => {
     }`;
 
     //post a request to the server to fetch all memes
-    const response = await request(_serverUrl, query);
+    const response = await request(process.env.REACT_APP_SERVER_URL, query);
     console.log(response);
     dispatch({ type: 'FETCH_LAST_MEMES', payload: response.lastMemes });
   } catch (err) {
@@ -345,7 +349,7 @@ export const fetchCustomMemes = (tags) => async (dispatch) => {
 
     console.log(query);
     //post a request to the server to fetch all memes
-    const response = await request(_serverUrl, query);
+    const response = await request(process.env.REACT_APP_SERVER_URL, query);
     console.log(response);
     dispatch({ type: 'FETCH_CUSTOM_MEMES', payload: response.customMemes });
     history.push('/customMemes');
@@ -392,7 +396,7 @@ export const fetchMyMemes = () => async (dispatch) => {
     }`;
 
     //initialize the graphql client
-    const client = new GraphQLClient(_serverUrl, {
+    const client = new GraphQLClient(process.env.REACT_APP_SERVER_URL, {
       headers: {
         Authorization: `bearer ${localStorage.getItem('token')}`,
       },
@@ -416,7 +420,7 @@ export const addLike = (meme, userId) => async (dispatch) => {
         id
       }
     }`;
-    const client = new GraphQLClient(_serverUrl, {
+    const client = new GraphQLClient(process.env.REACT_APP_SERVER_URL, {
       headers: {
         Authorization: `bearer ${localStorage.getItem('token')}`,
       },
@@ -442,7 +446,7 @@ export const removeLike = (meme, userId) => async (dispatch) => {
         id
       }
     }`;
-    const client = new GraphQLClient(_serverUrl, {
+    const client = new GraphQLClient(process.env.REACT_APP_SERVER_URL, {
       headers: {
         Authorization: `bearer ${localStorage.getItem('token')}`,
       },
@@ -468,7 +472,7 @@ export const addDisLike = (meme, userId) => async (dispatch) => {
         id
       }
     }`;
-    const client = new GraphQLClient(_serverUrl, {
+    const client = new GraphQLClient(process.env.REACT_APP_SERVER_URL, {
       headers: {
         Authorization: `bearer ${localStorage.getItem('token')}`,
       },
@@ -494,7 +498,7 @@ export const removeDisLike = (meme, userId) => async (dispatch) => {
         id
       }
     }`;
-    const client = new GraphQLClient(_serverUrl, {
+    const client = new GraphQLClient(process.env.REACT_APP_SERVER_URL, {
       headers: {
         Authorization: `bearer ${localStorage.getItem('token')}`,
       },
@@ -535,7 +539,7 @@ export const addComment = (data, setLoading) => async (dispatch) => {
       }
     }`;
 
-    const client = new GraphQLClient(_serverUrl, {
+    const client = new GraphQLClient(process.env.REACT_APP_SERVER_URL, {
       headers: {
         Authorization: `bearer ${localStorage.getItem('token')}`,
       },
@@ -601,7 +605,7 @@ export const fetchNotifications = () => async (dispatch) => {
       }
     }`;
 
-    const client = new GraphQLClient(_serverUrl, {
+    const client = new GraphQLClient(process.env.REACT_APP_SERVER_URL, {
       headers: {
         Authorization: `bearer ${localStorage.getItem('token')}`,
       },
@@ -626,7 +630,7 @@ export const fetchTags = () => async (dispatch) => {
       }
     }`;
 
-    const response = await request(_serverUrl, query);
+    const response = await request(process.env.REACT_APP_SERVER_URL, query);
     console.log(response);
     dispatch({ type: 'FETCH_TAGS', payload: response.fetchTags.tags });
   } catch (err) {

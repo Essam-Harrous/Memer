@@ -84,7 +84,7 @@ const Editor = (props) => {
         }
       }`;
 
-      const response = await request('/.netlify/functions/api/graphql', query);
+      const response = await request(process.env.REACT_APP_SERVER_URL, query);
       console.log(response);
       setState({ template: response.template });
     } catch (err) {
