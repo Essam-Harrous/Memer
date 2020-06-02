@@ -40,7 +40,7 @@ const Notifications = (props) => {
 
   //return main component
   return (
-    <main className='col-md-5 my-3 ml-md-5 mx-auto bd-content'>
+    <main className='col-md-6 my-3 mx-auto bd-content'>
       {!props.user.id ? <Redirect to='/' /> : null}
       <div>Notifications</div>
       {renderNotifications()}

@@ -38,7 +38,7 @@ const TemplatesContainer = (props) => {
     );
   };
   return (
-    <main className='col-md-5 my-3 ml-md-5 mx-auto bd-content'>
+    <main className='col-md-6 my-3 mx-auto bd-content'>
       <h1 className='text-center'>إختر قالب ميمز</h1>
       {renderTemplates()}
     </main>

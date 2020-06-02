@@ -39,7 +39,7 @@ const MyMemes = (props) => {
   };
   console.log(props);
   return (
-    <main className='col-md-5 my-3 ml-md-5 mx-auto bd-content'>
+    <main className='col-md-6 my-3 mx-auto bd-content'>
       <Comments />
       <h5>الميمز اللتي قمت بإنشائها</h5>
       {renderMemes()}

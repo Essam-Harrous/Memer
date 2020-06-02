@@ -28,7 +28,7 @@ const CustomMemes = (props) => {
   };
   console.log(props);
   return (
-    <main className='col-md-5 my-3 ml-md-5 mx-auto bd-content'>
+    <main className='col-md-6 my-3 mx-auto bd-content'>
       {!props.memes.length ? (
         <div className='alert alert-info' role='alert'>
           الميمز الذي تبحث عليه غير موجود..

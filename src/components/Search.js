@@ -52,7 +52,7 @@ const Search = (props) => {
   };
 
   return (
-    <div className='d-none d-md-block py-3 ml-md-3 col-md-2 col-xl-3 bd-toc'>
+    <div className='d-none d-md-block py-3 col-md-3 bd-toc'>
       <div className='card'>
         <div>Search</div>
         <form

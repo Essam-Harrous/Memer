@@ -26,7 +26,7 @@ class App extends React.Component {
         <SignUp />
         <AddTemplate />
         <div id='body' className='container-fluid'>
-          <div className='row mt-5'>
+          <div className='row'>
             <Search />
             <Switch>
               <Route path='/' exact component={MemesContainer} />

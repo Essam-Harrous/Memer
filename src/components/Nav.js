@@ -54,7 +54,7 @@ const Nav = (props) => {
     );
   };
   return (
-    <nav className='navbar navbar-expand-xl navbar-dark bg-dark fixed-top'>
+    <nav className='navbar navbar-expand-md bg-white sticky-top'>
       <div className='navbar-collapse collapse w-100 order-1 order-md-0 '>
         <ul className='navbar-nav mr-auto'>{LogInOrOut()}</ul>
       </div>
@@ -63,15 +63,15 @@ const Nav = (props) => {
           <img src='https://www.dropbox.com/s/p966o311gd6u9wd/rsz_1rsz_11rsz_1rsz_memer_n1ozxp.png?raw=1' />
         </Link>
       </div>
-      {/* <button
-        className='navbar-toggler'
+      <button
+        style={{
+          position: 'absolute',
+          right: '0px',
+        }}
         type='button'
-        data-toggle='collapse'
-        data-target='.dual-collapse2'
+        id='sidebarCollapse'
+        className='navbar-toggler'
       >
-        <span className='navbar-toggler-icon'></span>
-      </button> */}
-      <button type='button' id='sidebarCollapse' className='navbar-toggler'>
         <i className='fas fa-align-right'></i>
       </button>
       <div className='navbar-collapse collapse w-100 order-3 dual-collapse2'>
