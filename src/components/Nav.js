@@ -54,7 +54,7 @@ const Nav = (props) => {
     );
   };
   return (
-    <nav className='navbar navbar-expand-md bg-white sticky-top'>
+    <nav id="nav-shadow" className='navbar navbar-expand-md bg-white sticky-top'>
       <div className='navbar-collapse collapse w-100 order-1 order-md-0 '>
         <ul className='navbar-nav mr-auto'>{LogInOrOut()}</ul>
       </div>

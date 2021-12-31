@@ -91,8 +91,8 @@ const Meme = (props) => {
 
   //return the meme component
   return (
-    <div id='meme-container' className='card my-5 mx-auto'>
-      <div className='card-header'>
+    <div id='meme-container' className='bg-white my-5 mx-auto'>
+      <div className='px-3 pt-2'>
         <div className='media text-right rtl'>
           <img
             className='d-flex ml-3 rounded-circle'

@@ -25,12 +25,14 @@ const memeSchema = new Schema({
   peopleLikes: [
     {
       type: Schema.Types.ObjectId,
+      ref: 'User',
       trim: true,
     },
   ],
   peopleDisLikes: [
     {
       type: Schema.Types.ObjectId,
+      ref: 'User',
       trim: true,
     },
   ],

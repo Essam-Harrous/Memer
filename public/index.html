@@ -1,81 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link
-      rel="icon"
-      href="https://www.dropbox.com/s/p966o311gd6u9wd/rsz_1rsz_11rsz_1rsz_memer_n1ozxp.png?raw=1"
-    />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="a website with editor used to create memes for memers"
-    />
-    <link
-      rel="apple-touch-icon"
-      href="https://www.dropbox.com/s/p966o311gd6u9wd/rsz_1rsz_11rsz_1rsz_memer_n1ozxp.png?raw=1"
-    />
-    <!--
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="https://www.dropbox.com/s/p966o311gd6u9wd/rsz_1rsz_11rsz_1rsz_memer_n1ozxp.png?raw=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;800&display=swap" rel="stylesheet">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="a website with editor used to create memes for memers" />
+  <link rel="apple-touch-icon"
+    href="https://www.dropbox.com/s/p966o311gd6u9wd/rsz_1rsz_11rsz_1rsz_memer_n1ozxp.png?raw=1" />
+  <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
-    <!--
+  <!--
       pixie
     -->
-    <link rel="stylesheet" href="../styles.min.css?v19" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <style>
-      body,
-      html {
-        margin: 0;
-        width: 100%;
-        height: 100%;
-      }
-    </style>
-    <link rel="stylesheet" href="../spinner.css" />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/placeholder-loading/dist/css/placeholder-loading.min.css"
-    />
+  <link rel="stylesheet" href="../styles.min.css?v19" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet" type="text/css" />
+  <style>
+    body,
+    html {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+  <link rel="stylesheet" href="../spinner.css" />
+  <link rel="stylesheet" href="https://unpkg.com/placeholder-loading/dist/css/placeholder-loading.min.css" />
 
-    <!--
+  <!--
       semantic ui link
     -->
-    <!-- Font Awesome -->
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
-    />
-    <!-- Google Fonts -->
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-    />
-    <!-- Bootstrap core CSS -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <!-- Material Design Bootstrap -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/css/mdb.min.css"
-      rel="stylesheet"
-    />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" />
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+  <!-- Bootstrap core CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Material Design Bootstrap -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/css/mdb.min.css" rel="stylesheet" />
 
-    <!-- Scrollbar Custom CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css"
-    />
+  <!-- Scrollbar Custom CSS -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css" />
 
-    <!--
+  <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -84,12 +60,13 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>Memer</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
+  <title>Memer</title>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -100,9 +77,9 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
 
-    <script src="../scripts.min.js?v19"></script>
+  <script src="../scripts.min.js?v19"></script>
 
-    <!-- 
+  <!-- 
     <script>
       var pixie = new Pixie({
         crossOrigin: true,
@@ -112,63 +89,51 @@
         },
       });
     </script> -->
-  </body>
+</body>
 
-  <!-- jQuery CDN - Slim version (=without AJAX) -->
-  <script
-    src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"
-  ></script>
-  <!-- Popper.JS -->
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
-    integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
-    crossorigin="anonymous"
-  ></script>
+<!-- jQuery CDN - Slim version (=without AJAX) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!-- Popper.JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+  integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 
-  <!-- Bootstrap tooltips -->
-  <script
-    type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"
-  ></script>
-  <!-- Bootstrap core JavaScript -->
-  <script
-    type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"
-  ></script>
-  <!-- MDB core JavaScript -->
-  <script
-    type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/js/mdb.min.js"
-  ></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/js/mdb.min.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
-  <script>
-    $(document).ready(function () {
-      $('#sidebar').mCustomScrollbar({
-        theme: 'minimal',
-      });
-
-      $('#sidebarCollapse').on('click', function () {
-        // open or close navbar
-        $('#sidebar').toggleClass('active');
-        // close dropdowns
-        $('.collapse.in').toggleClass('in');
-        // and also adjust aria-expanded attributes we use for the open/closed arrows
-        // in our CSS
-        $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-      });
-
-      $('#body').on('click', (e) => {
-        if (
-          $('#sidebar')[0].classList.contains('active') &&
-          !e.target.className.includes('no')
-        ) {
-          $('#sidebar').toggleClass('active');
-        }
-      });
+<script>
+  $(document).ready(function () {
+    $('#sidebar').mCustomScrollbar({
+      theme: 'minimal',
     });
-  </script>
+
+    $('#sidebarCollapse').on('click', function () {
+      // open or close navbar
+      $('#sidebar').toggleClass('active');
+      // close dropdowns
+      $('.collapse.in').toggleClass('in');
+      // and also adjust aria-expanded attributes we use for the open/closed arrows
+      // in our CSS
+      $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+    });
+
+    $('#body').on('click', (e) => {
+      if (
+        $('#sidebar')[0].classList.contains('active') &&
+        !e.target.className.includes('no')
+      ) {
+        $('#sidebar').toggleClass('active');
+      }
+    });
+  });
+</script>
+
 </html>
