@@ -7,24 +7,24 @@ const {
   GraphQLSchema,
   GraphQLBoolean,
   GraphQLNonNull,
-} = require('graphql');
+} = require("graphql");
 
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const Cloudinary = require('cloudinary').v2;
-const gravatar = require('gravatar');
-const mongoose = require('mongoose');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const Cloudinary = require("cloudinary").v2;
+const gravatar = require("gravatar");
+const mongoose = require("mongoose");
 
-const Meme = require('../models/meme');
-const Ad = require('../models/ad');
-const Comment = require('../models/comment');
-const User = require('../models/user');
-const Notification = require('../models/notification');
-const Template = require('../models/template');
+const Meme = require("../models/meme");
+const Ad = require("../models/ad");
+const Comment = require("../models/comment");
+const User = require("../models/user");
+const Notification = require("../models/notification");
+const Template = require("../models/template");
 
 //successType schema
 const SuccessType = new GraphQLObjectType({
-  name: 'Success',
+  name: "Success",
   fields: () => ({
     success: { type: GraphQLBoolean },
     message: { type: GraphQLString },
@@ -33,7 +33,7 @@ const SuccessType = new GraphQLObjectType({
 
 //Meme schema
 const MemeType = new GraphQLObjectType({
-  name: 'Meme',
+  name: "Meme",
   fields: () => ({
     id: { type: GraphQLID },
     memeUrl: { type: GraphQLString },
@@ -72,7 +72,7 @@ const MemeType = new GraphQLObjectType({
 
 //User Schema
 const UserType = new GraphQLObjectType({
-  name: 'User',
+  name: "User",
   fields: () => ({
     firstName: {
       type: GraphQLString,
@@ -106,7 +106,7 @@ const UserType = new GraphQLObjectType({
 
 //Comment Schema
 const CommentType = new GraphQLObjectType({
-  name: 'Comment',
+  name: "Comment",
   fields: () => ({
     id: { type: GraphQLID },
     user: {
@@ -127,7 +127,7 @@ const CommentType = new GraphQLObjectType({
 
 //Template Schema
 const TemplateType = new GraphQLObjectType({
-  name: 'Template',
+  name: "Template",
   fields: () => ({
     templateUrl: { type: GraphQLString },
     id: { type: GraphQLID },
@@ -143,7 +143,7 @@ const TemplateType = new GraphQLObjectType({
 
 //Ad Schema
 const AdType = new GraphQLObjectType({
-  name: 'AdType',
+  name: "AdType",
   fields: () => ({
     header: { type: GraphQLString },
     imageUrl: { type: GraphQLString },
@@ -154,7 +154,7 @@ const AdType = new GraphQLObjectType({
 
 //Notification Schema
 const NotificationType = new GraphQLObjectType({
-  name: 'NotificationType',
+  name: "NotificationType",
   fields: () => ({
     sender: {
       type: UserType,
@@ -181,7 +181,7 @@ const NotificationType = new GraphQLObjectType({
 
 //the root that join all the graphql schema
 const RootQuery = new GraphQLObjectType({
-  name: 'RootQueryType',
+  name: "RootQueryType",
   fields: {
     users: {
       type: new GraphQLList(UserType),
@@ -194,7 +194,7 @@ const RootQuery = new GraphQLObjectType({
     user: {
       type: UserType,
       resolve(parent, args, { user }) {
-        if (!user) return new Error('الرجاء تسجيل الدخول أو إنشاء حساب جديد');
+        if (!user) return new Error("الرجاء تسجيل الدخول أو إنشاء حساب جديد");
         return User.findById(user.id);
       },
     },
@@ -208,7 +208,7 @@ const RootQuery = new GraphQLObjectType({
       type: new GraphQLList(MemeType),
       args: { tags: { type: new GraphQLList(GraphQLString) } },
       resolve(parent, args) {
-        console.log(args.tags, 'haaaaaaaaaaaaaai');
+        console.log(args.tags, "haaaaaaaaaaaaaai");
         return Meme.find({
           $or: [
             { tags: { $regex: getRegex(args.tags) } },
@@ -222,7 +222,7 @@ const RootQuery = new GraphQLObjectType({
       resolve(parent, args, { user }) {
         try {
           if (!user)
-            throw new Error('الرجاء تسجيل الدخول أو القيام بإنشاء حساب جديد');
+            throw new Error("الرجاء تسجيل الدخول أو القيام بإنشاء حساب جديد");
           return Meme.find({ userId: user.id }).sort({ _id: -1 });
         } catch (err) {
           return err;
@@ -239,7 +239,7 @@ const RootQuery = new GraphQLObjectType({
     notifications: {
       type: new GraphQLList(NotificationType),
       resolve(parent, args, { user }) {
-        if (!user) return new Error('الرجاء تسجيل الدخول أو إنشاء حساب جديد');
+        if (!user) return new Error("الرجاء تسجيل الدخول أو إنشاء حساب جديد");
         return Notification.find({ receiverId: user.id });
       },
     },
@@ -280,11 +280,11 @@ const RootQuery = new GraphQLObjectType({
         const user = await User.findOne({
           $or: [{ username: args.username }, { email: args.email }],
         });
-        if (!user) throw new Error('الرجاء إدخال بيانات صحيحة');
+        if (!user) throw new Error("الرجاء إدخال بيانات صحيحة");
 
         //check if the password is correct
         const isPassword = await bcrypt.compare(args.password, user.password);
-        if (!isPassword) throw new Error('الرجاء إدخال بيانات صحيحة');
+        if (!isPassword) throw new Error("الرجاء إدخال بيانات صحيحة");
 
         //generate a token for this user
         const token = jwt.sign(
@@ -297,7 +297,7 @@ const RootQuery = new GraphQLObjectType({
             avatar: user.avatar,
           },
           process.env.TOKEN_SECRET_VALUE,
-          { expiresIn: '2h' }
+          { expiresIn: "2h" }
         );
 
         //return an object that hold the use data
@@ -315,14 +315,14 @@ const RootQuery = new GraphQLObjectType({
     fetchTags: {
       type: MemeType,
       async resolve(parent, args, context) {
-        console.log('hi');
+        console.log("hi");
         const res = await Meme.aggregate([
-          { $unwind: '$tags' },
+          { $unwind: "$tags" },
           { $project: { tags: 1, _id: 0 } },
           {
             $group: {
               _id: null,
-              tags: { $addToSet: '$tags' },
+              tags: { $addToSet: "$tags" },
             },
           },
         ]).limit(10);
@@ -334,7 +334,7 @@ const RootQuery = new GraphQLObjectType({
 });
 
 const Mutation = new GraphQLObjectType({
-  name: 'Mutation',
+  name: "Mutation",
   fields: {
     signUp: {
       type: UserType,
@@ -357,7 +357,7 @@ const Mutation = new GraphQLObjectType({
         const password = await bcrypt.hash(args.password, 12);
 
         //create the avatar
-        const avatar = gravatar.url(args.email, { s: '50' }, true);
+        const avatar = gravatar.url(args.email, { s: "50" }, true);
 
         //creating a new User
         const newUser = await User.create({
@@ -378,7 +378,7 @@ const Mutation = new GraphQLObjectType({
             avatar: newUser.avatar,
           },
           process.env.TOKEN_SECRET_VALUE,
-          { expiresIn: '2h' }
+          { expiresIn: "2h" }
         );
 
         //return an object that hold the use data
@@ -404,9 +404,9 @@ const Mutation = new GraphQLObjectType({
       },
       async resolve(parent, args, { user }) {
         try {
-          console.log('inside an addMeme resolver');
+          console.log("inside an addMeme resolver");
           //check if the user has a valid token
-          if (!user) throw new Error('الرجاء تسجيل الدخول أو إنشاء حساب جديد');
+          if (!user) throw new Error("الرجاء تسجيل الدخول أو إنشاء حساب جديد");
 
           //check if the meme has a templateId or not
           let templateId;
@@ -415,7 +415,7 @@ const Mutation = new GraphQLObjectType({
             const cloudinaryRes = await Cloudinary.uploader.upload(
               args.templateUrl,
               {
-                folder: 'templates',
+                folder: "templates",
               }
             );
             //create a new template
@@ -430,8 +430,8 @@ const Mutation = new GraphQLObjectType({
           const cloudinaryMemeRes = await Cloudinary.uploader.upload(
             args.memeUrl,
             {
-              folder: 'memes',
-              transformation: { quality: auto },
+              folder: "memes",
+              transformation: { quality: "auto" },
             }
           );
 
@@ -453,7 +453,7 @@ const Mutation = new GraphQLObjectType({
       async resolve(parent, args, { user }) {
         try {
           //check if the user has a valid token
-          if (!user) throw new Error('الرجاء تسجيل الدخول أو إنشاء حساب جديد');
+          if (!user) throw new Error("الرجاء تسجيل الدخول أو إنشاء حساب جديد");
 
           //check if this meme is for that user
           const meme = await Meme.findById(args.memeId);
@@ -507,7 +507,7 @@ const Mutation = new GraphQLObjectType({
       async resolve(parent, args, { user }) {
         try {
           //check if the user has a valid
-          if (!user) throw new Error('الرجاء تسجيل الدخول أو إنشاء حساب جديد');
+          if (!user) throw new Error("الرجاء تسجيل الدخول أو إنشاء حساب جديد");
 
           //check if this meme is for that user
           const meme = await Meme.findById(args.memeId);
@@ -537,14 +537,14 @@ const Mutation = new GraphQLObjectType({
       async resolve(parent, args, { user }) {
         try {
           //check if the user has a valid
-          if (!user) throw new Error('الرجاء تسجيل الدخول أو إنشاء حساب جديد');
+          if (!user) throw new Error("الرجاء تسجيل الدخول أو إنشاء حساب جديد");
 
           //upload the template image to cloudinary
           const cloudinaryRes = await Cloudinary.uploader.upload(
             args.templateData,
             {
-              folder: 'templates',
-              transformation: { quality: auto },
+              folder: "templates",
+              transformation: { quality: "auto" },
             }
           );
           console.log(cloudinaryRes);
@@ -566,7 +566,7 @@ const Mutation = new GraphQLObjectType({
       async resolve(parent, args, { user }) {
         try {
           //check if the user has a valid token
-          if (!user) throw new Error('الرجاء تسجيل الدخول أو إنشاء حساب جديد');
+          if (!user) throw new Error("الرجاء تسجيل الدخول أو إنشاء حساب جديد");
 
           //check if this template is for that user
           const template = await Template.findById(args.templateId);
@@ -618,14 +618,14 @@ const Mutation = new GraphQLObjectType({
       async resolve(parent, args, { user }) {
         try {
           //check if the user has a valid
-          if (!user) throw new Error('الرجاء تسجيل الدخول أو إنشاء حساب جديد');
+          if (!user) throw new Error("الرجاء تسجيل الدخول أو إنشاء حساب جديد");
 
           //create a notification
           Notification.create({
             senderId: user.id,
             receiverId: args.receiverId,
             memeId: args.memeId,
-            type: 'comment',
+            type: "comment",
           });
 
           //create a new Comment
@@ -655,7 +655,7 @@ const Mutation = new GraphQLObjectType({
       async resolve(parent, args, { user }) {
         try {
           //check if the user has a valid token
-          if (!user) throw new Error('الرجاء تسجيل الدخول أو إنشاء حساب جديد');
+          if (!user) throw new Error("الرجاء تسجيل الدخول أو إنشاء حساب جديد");
 
           //check if this comment is for that user
           const comment = await Comment.findById(args.commentId);
@@ -684,7 +684,7 @@ const Mutation = new GraphQLObjectType({
       async resolve(parent, args, { user }) {
         try {
           //check if the user has a valid token
-          if (!user) throw new Error('الرجاء تسجيل الدخول أو إنشاء حساب جديد');
+          if (!user) throw new Error("الرجاء تسجيل الدخول أو إنشاء حساب جديد");
 
           //delete the Meme
           await User.findByIdAndDelete(user.id);
@@ -731,22 +731,22 @@ const Mutation = new GraphQLObjectType({
       async resolve(parent, args, { user }) {
         try {
           //check if the user has a valid token
-          if (!user) throw new Error('الرجاء تسجيل الدخول أو إنشاء حساب جديد');
-          console.log('inside addLike');
+          if (!user) throw new Error("الرجاء تسجيل الدخول أو إنشاء حساب جديد");
+          console.log("inside addLike");
 
           const hasLikedBefore = await Notification.exists({
             memeId: args.memeId,
             senderId: user.id,
-            type: 'like',
+            type: "like",
           });
 
-          if (hasLikedBefore) throw new Error('you already Liked it before');
+          if (hasLikedBefore) throw new Error("you already Liked it before");
 
           await Notification.create({
             senderId: user.id,
             receiverId: args.receiverId,
             memeId: args.memeId,
-            type: 'like',
+            type: "like",
           });
 
           //find the meme by id and update the likes
@@ -766,20 +766,20 @@ const Mutation = new GraphQLObjectType({
       async resolve(parent, args, { user }) {
         try {
           //check if the user has a valid token
-          if (!user) throw new Error('الرجاء تسجيل الدخول أو إنشاء حساب جديد');
+          if (!user) throw new Error("الرجاء تسجيل الدخول أو إنشاء حساب جديد");
 
           const hasLikedBefore = await Notification.exists({
             memeId: args.memeId,
             senderId: user.id,
-            type: 'like',
+            type: "like",
           });
 
-          if (!hasLikedBefore) throw new Error('you did not Liked it before');
+          if (!hasLikedBefore) throw new Error("you did not Liked it before");
 
           await Notification.findOneAndDelete({
             memeId: args.memeId,
             senderId: user.id,
-            type: 'like',
+            type: "like",
           });
 
           //find the meme by id and update the likes
@@ -799,24 +799,24 @@ const Mutation = new GraphQLObjectType({
       },
       async resolve(parent, args, { user }) {
         try {
-          console.log('inside disLike');
+          console.log("inside disLike");
           //check if the user has a valid token
-          if (!user) throw new Error('الرجاء تسجيل الدخول أو إنشاء حساب جديد');
+          if (!user) throw new Error("الرجاء تسجيل الدخول أو إنشاء حساب جديد");
 
           const hasDisLikedBefore = await Notification.exists({
             memeId: args.memeId,
             senderId: user.id,
-            type: 'disLike',
+            type: "disLike",
           });
 
           if (hasDisLikedBefore)
-            throw new Error('you already disLiked it before');
+            throw new Error("you already disLiked it before");
 
           await Notification.create({
             senderId: user.id,
             receiverId: args.receiverId,
             memeId: args.memeId,
-            type: 'disLike',
+            type: "disLike",
           });
 
           //find the meme by id and update the likes
@@ -836,23 +836,23 @@ const Mutation = new GraphQLObjectType({
       async resolve(parent, args, { user }) {
         try {
           //check if the user has a valid token
-          if (!user) throw new Error('الرجاء تسجيل الدخول أو إنشاء حساب جديد');
+          if (!user) throw new Error("الرجاء تسجيل الدخول أو إنشاء حساب جديد");
 
           const hasdisLikedBefore = await Notification.exists({
             memeId: args.memeId,
             senderId: user.id,
-            type: 'disLike',
+            type: "disLike",
           });
 
           console.log(hasdisLikedBefore);
 
           if (!hasdisLikedBefore)
-            throw new Error('you did not disLiked it before');
+            throw new Error("you did not disLiked it before");
 
           await Notification.findOneAndDelete({
             memeId: args.memeId,
             senderId: user.id,
-            type: 'disLike',
+            type: "disLike",
           });
 
           //find the meme by id and update the likes
