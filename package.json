@@ -34,7 +34,7 @@
     "react-loading": "^2.0.3",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "5.0.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "serverless-http": "^2.4.1",
